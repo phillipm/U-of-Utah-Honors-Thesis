@@ -1,0 +1,79 @@
+%
+% $Id: ch01_overview
+%
+\chapter{Overview}\label{ch:overview}
+
+\begin{figure}
+\centering
+\begin{tabular}{l l l}
+\epsfxsize=1.8in\epsffile{Figdir/Nausicaa.eps} &
+\epsfxsize=1.8in\epsffile{Figdir/Nausicaa.eps} &
+\epsfxsize=1.8in\epsffile{Figdir/Nausicaa.eps} \\
+\end{tabular}
+\caption{M-rep based models.[replace with CAD-style model with displacements,
+when we've got one]}\label{fig:teaser}
+\end{figure}
+
+\begin{quote}
+\small
+``If you'd like pithy remarks and cute quotes to begin each chapter, they can
+be inserted like this"\\
+---The Editor
+\end{quote}
+
+In the little more than 30 years since computer-based 3D geometric modeling
+has been practiced, blah blah blah
+
+\section{Conventional geometric modeling primitives} \label{sec:motivation}
+
+\section{Thesis statement, claims and contributions}
+
+Introduce your own approach to the problem in relation to one described, and then
+give your thesis statement.
+
+\begin{Thesis}
+It is both simple and useful to provide students with a \LaTeX\ template
+for their formal thesis proposals.  This results in far fewer
+questions from students uncertain as to what belongs in their proposals.  Such a template
+will be of benefit to students in Computer Science/Applied Computing as well as to any
+others willing and able to use \LaTeX\ for their work.
+\end{Thesis}
+
+A formal thesis statement should be a \emph{falsifiable} statement about the goal
+you will attempt to achieve with your research project.  For a purely scientific
+project, this is the hypothesis you are testing with your research.  For an applied
+programming project, it is usually a statement about the feasibility and correctness
+of your approach and the advantages it has over other approaches.  For a survey, study,
+or library comp, it is usually a statement regarding the need or usefulness of such
+a study, its intended audience, and so on.
+
+During my research, I have achieved the following results:
+
+\begin{table*}
+\centering
+\begin{tabular}{l|c|c|c|c}
+\emph{Primitives}& \emph{Global geometry}& \emph{Tolerance} & \emph{Multiscale}
+& \emph{Shape statistics}
+\\
+\hline
+B-rep models            & No        & No    & No & Yes\\
+\ \ subdivision models  & No        & No    & Yes & No \\
+\ \ sph.\ harmonic models & Only!    & No    & Somewhat & Yes \\
+\hline
+CSG models              & Yes       & No    & No & No \\
+\hline
+Implicit models         & No        & No    & Somewhat & No\\
+\ \ convolution surfaces & Yes      & No    & Somewhat & No\\
+\hline
+Volume models           & No        & No    & No & No\\
+\hline
+Medial models           & Yes       & No    & Some & Yes \\
+\hline
+IBR models              & No        & No    & No & No \\
+\hline
+M-rep models            & Yes       & Yes   & Yes & Yes
+\end{tabular}
+\caption{\label{tb:Table1} Modeling primitives and their features.}
+\end{table*}
+
+\section{Thesis outline}

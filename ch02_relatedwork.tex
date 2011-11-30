@@ -1,0 +1,43 @@
+%
+% $Id: ch02_relatedwork
+%
+\chapter{Related Work}\label{ch:relatedwork}
+
+Discuss related work that influenced your own.
+
+\section{Stuff I really liked}
+
+A distinction can be drawn between image-analytic shape definition and model-based image
+segmentation based on synthetic models.  Stephen Pizer contrasts medial image analysis
+(whether by Blum or Voronoi skeleta, cores, core atoms, etc.) with
+\emph{reality analysis} via medial models such as statistical m-reps.  The dichotomy may
+be likened to Plato's Allegory of the Cave\cite{Plato:360BC}, wherein an unseen ``ideal"
+object casts a ``shadow" onto the ``wall" of our perceptions.  A 3D data-set is the shadow
+of a real object:  image-analytic techniques treat the shadow as the object of study itself,
+while model-based techniques work from \emph{a priori} knowledge based on shape properties
+and statistics, trying to fit known attributes of the object to the shadow being cast.
+This dichotomy may be expressed as
+\begin{center}
+\begin{tabular}{l|c|c}
+image-analytic & \emph{a posteriori}& \emph{deductive, data-derived} \\
+\hline
+model-based & \emph{a priori}& \emph{inductive, knowledge-derived}.
+\end{tabular}
+\end{center}
+In terms of medial shape description, this expresses itself as
+\begin{center}
+\begin{tabular}{l|c|c}
+b-rep--to--m-rep & \emph{analytic}& \emph{unstable} \\
+\hline
+m-rep--to--b-rep & \emph{synthetic}& \emph{stable}.
+\end{tabular}
+\end{center}
+The idea thus developed in the work of Pizer and his colleagues in image analysis was to
+reverse the medial transform, define objects medially and allow the medial structure
+to imply the boundaries~\cite{Pizer99b}.  Further, we chose a discretely-sampled medial
+representation rather than a continuous one.  This, in an analytic approach, would be seen
+as a geometrically-lossy boundary-to-medial transformation; instead, as a synthetic,
+medial-to-boundary transformation, it determines the object boundary to within
+a sampling-proportional tolerance.
+
+\section{Stuff I really loathed}
