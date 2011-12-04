@@ -9,7 +9,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \documentclass[12pt]{report}
 %\usepackage[debug,draft,single]{gatorthesis} % for student workcopy
-\usepackage[debug,draft,double]{gatorthesis} % for student proof doublespace
+\usepackage[debug,double]{gatorthesis} % for student proof doublespace
 %\usepackage[single]{gatorthesis} % for student
 %\usepackage[bottom,double]{gatorthesis} % for final department copy
 %\usepackage[debug,draft,nolists,nofront,single]{gatorthesis} % more output options
@@ -37,21 +37,18 @@
 
 \begin{document}
 
-\thesistitle{A Very Fine Senior Comprehensive Thesis}
-\thesisauthor{Dr.\ Andrew Thall} \thesisadvisor{I.\ M.\ Firstreader}
-\thesisnumber{CS04-01}
-\thesisreadera{I.\ M.\ Second}
+\thesistitle{A SURVEY INTO THE CURRY-HOWARD ISOMORPHISM}
+\thesisauthor{Phillip Mates} 
+\thesisadvisor{Matthew Might}
+\thesischair{Al Davis}
+\thesisdean{Thomas G. Richmond}
+\thesishonorsadvisor{Dianne Leonard}
 % \thesisreaderb{I.\ B.\ Third} \thesisreaderc{I.\ B.\ Fourth} \thesisreaderd{I.\ B.\ Fifth}
 \date{\FileRevised \\ $\mbox{}$Revision: 1.8 $\mbox{}$}
 
 \thesismaketitle
-\thesismakecopyright
 
 \include{abstract}
-
-\include{dedication}
-
-\include{ack}
 
 % Andrew added this line to set tocdepth for including sections in TofContents
 \setcounter{tocdepth}{2}
@@ -102,7 +99,7 @@
   \bibliography{Bibdir/myBibtexDB}
 \end{spacing}
 
-\include{colophon}
+\include{lastpage}
 
 \typeout{THEPAGE \thepage}
 
