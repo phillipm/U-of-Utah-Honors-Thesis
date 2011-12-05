@@ -1,43 +1,28 @@
 \chapter{INTRODUCTION}\label{ch:intro}
-Welcome to The Cube of Lambda, not to be confused with the <a href="http://en.wikipedia.org/wiki/Time_Cube">Time Cube</a>.
+This blog contains my study notes on the Curry-Howard Isomorphism (C-H) and the broader field of Programming Languages. While much material on C-H exists, most of it expects domain expertise from the reader. My goal is to present an undergraduate level introduction of C-H. I am in no way an expert in this field and thus mistakes are inescapable, please be kind and point them out.
 
-This blog contains my (<a href="http://eng.utah.edu/%7Emates/">Phillip Mates)</a> study notes on the Curry-Howard Isomorphism (C-H) and the broader field of Programming Languages. While much material on C-H exists, most of it expects domain expertise from the reader. My goal is to present an undergraduate level introduction of C-H. I am in no way an expert in this field and thus mistakes are inescapable, please be kind and point them out.
 
-<img class="size-full wp-image-26 aligncenter" title="tetraktys" src="http://cubeoflambda.files.wordpress.com/2011/08/tetraktys.png" alt="" width="50" height="40" />
-
-<strong>What is the Curry-Howard Isomorphism?</strong> (hand wavy version)
-The Curry-Howard Isomorphism states that there is a direct correspondence between <a href="http://en.wikipedia.org/wiki/Intuitionistic_logic">intuitionistic logic</a> and typed <a href="http://en.wikipedia.org/wiki/Lambda_calculus">lambda calculus</a>.
+\section{What is the Curry-Howard Isomorphism? (hand wavy version)}
+The Curry-Howard Isomorphism states that there is a direct correspondence between intuitionistic logic and typed lambda calculus.
 
 More specifically a type declaration given in a programming language corresponds to a logical proposition and an implementation of that type declaration is a proof of that proposition.
 
-<i>A Simple Example:</i>
+\emph{A Simple Example:}
 The Haskell type signature for the function const
-<pre><font color="Blue">const</font> <font color="Red">::</font> a <font color="Red">-&gt;</font> b <font color="Red">-&gt;</font> a</pre>
+%<pre><font color="Blue">const</font> <font color="Red">::</font> a <font color="Red">-&gt;</font> b <font color="Red">-&gt;</font> a</pre>
 
-is equivalent to the logical proposition $latex \frac{\Gamma, \alpha \vdash \beta}{\Gamma \vdash \alpha \rightarrow \beta \rightarrow \alpha}&amp;fg=000000&amp;s=1$
+is equivalent to the logical proposition $\frac{\Gamma, \alpha \vdash \beta}{\Gamma \vdash \alpha \rightarrow \beta \rightarrow \alpha}$
 
 And since we are using a restricted form of logic known as intuitionistic or constructivist logic, providing a well-typed implementation to the function's type signature is the same as giving a logical proof.
-<pre><font color="Blue">const</font> a b <font color="Red">=</font> a</pre>
+%<pre><font color="Blue">const</font> a b <font color="Red">=</font> a</pre>
 
 The example above is somewhat uninteresting since it deals with first-order logic. However, later I will show how the Curry-Howard Isomorphism holds for higher levels of logic as well.
 
-<strong>Why is this interesting?</strong>
-C-H sounds kind of interesting, but one might <a href="http://lambda-the-ultimate.org/node/1532">ask how it is useful?</a>
+\section{Why is this interesting?}
+C-H sounds kind of interesting, but one might ask how it is useful?
 
-C-H isn't really useful for the average programmer. Regardless, researchers are coming up with crazy new programming languages that make use of C-H. <a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.155">Cayenne</a> and <a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.63.8326">Omega</a> for example use dependent types, which correspond to higher-order logic.
+C-H isn't really useful for the average programmer. Regardless, researchers are coming up with crazy new programming languages that make use of C-H. Cayenne and Omega for example use dependent types, which correspond to higher-order logic.
 
 Additionally, C-H has let mathematicians and computer scientists benefit from each other's discoveries. Computer scientists have traditionally researched reductions in lambda-calculus, while mathematicians have worked on normalization in proof theory. Thus, a discovery in one domain directly translates into the other domain. (pg. 67 of [1])
 
 My interest in C-H started when I wanted to create a system to generate functions given a type signature and example input-output pairs. The problem is too under-determined to be plausible, but using more advanced type systems and leveraging C-H might mitigate that.
-
-<strong>What next?</strong>
-I've made broad generalizations and introduced all sorts of new unknowns.
-
-Coming up next:
-<ul>
-  <li><a href="http://cubeoflambda.wordpress.com/2011/08/31/a-notational-primer-for-the-new-pler/">A notation primer for the new PLer</a></li>
-  <li><a href="http://cubeoflambda.wordpress.com/2011/09/13/intuitionistic-logic-primer/">An intuitionistic logic primer</a></li>
-        <li>Heyting Algebra and abstract algebraic representations of intuitionistic logic</li>
-  <li>The correspondence between second-order logic and dependent types</li>
-  <li>How programming languages are making use of C-H</li>
-</ul>

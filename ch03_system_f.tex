@@ -2,48 +2,51 @@
 System F is a second-order typed lambda calculus that allows universal quantification over types. The Curry-Howard Isomorphism extends to System F, providing a direct correspondence to second order intuitionistic logic. It was discovered independently by the logician Jean-Yves Girard and computer scientist John C. Reynolds.
 
 Girard developed System F as a proof notation for second-order logic, while Reynolds invented System F when trying to build a type system for a polymorphic programming language.[2]
-<h3>Quick Intuition on System F</h3>
-The practical idea of System F is to add polymorphism to typed lambda calculus. For instance if we want to define the untyped function $latex composition = \lambda f. \lambda g. \lambda x. f\ (g\ x) &amp;fg=000000&amp;s=1$ in $latex \lambda_{\rightarrow} &amp;fg=000000&amp;s=1$ (simply typed lambda calculus), we would need to define an infinite number of functions in order to satisfy all possible types:
+\section{Quick Intuition on System F}
+The practical idea of System F is to add polymorphism to typed lambda calculus. For instance if we want to define the untyped function $composition = \lambda f. \lambda g. \lambda x. f\ (g\ x) $ in $\lambda_{\rightarrow} $ (simply typed lambda calculus), we would need to define an infinite number of functions in order to satisfy all possible types:
 
-$latex compositionInt = \lambda f:Int \rightarrow Int.\ \lambda g:Int \rightarrow Int.\ \lambda x:Int.\ f\ (g\ x) &amp;fg=000000&amp;s=0$
-$latex compositionBool = \lambda f:Bool \rightarrow Bool.\ \lambda g:Bool \rightarrow Bool.\ \lambda x:Bool.\ f\ (g\ x) &amp;fg=000000&amp;s=0$
-$latex \ldots &amp;fg=000000&amp;s=0$
+$compositionInt = \lambda f:Int \rightarrow Int.\ \lambda g:Int \rightarrow Int.\ \lambda x:Int.\ f\ (g\ x) $
+$compositionBool = \lambda f:Bool \rightarrow Bool.\ \lambda g:Bool \rightarrow Bool.\ \lambda x:Bool.\ f\ (g\ x) $
+$\ldots $
 
-To circumvent this, we add universal quantification ($latex \forall &amp;fg=000000&amp;s=1$) over types to the calculi and call it $latex \lambda_{P} &amp;fg=000000&amp;s=1$. The composition function now looks like this:
-$latex composition = \lambda X.\ \lambda f:X \rightarrow X.\ \lambda g:X \rightarrow X.\ \lambda x:X.\ f\ (g\ x) &amp;fg=000000&amp;s=0$
+To circumvent this, we add universal quantification ($\forall $) over types to the calculi and call it $\lambda_{P} $. The composition function now looks like this:
+$composition = \lambda X.\ \lambda f:X \rightarrow X.\ \lambda g:X \rightarrow X.\ \lambda x:X.\ f\ (g\ x) $
 
 The idea is that the type is abstracted out of the term, allowing for type variables to later be applied to it:
-$latex composition [Int] \rightarrow [X \mapsto Int] composition &amp;fg=000000&amp;s=1$
+$composition [Int] \rightarrow [X \mapsto Int] composition $
 
-More formally, type abstractions and applications are added to the syntax and reduction rules of $latex \lambda_{\rightarrow} &amp;fg=000000&amp;s=1$, full details of which are found on page 343 of [3].
+More formally, type abstractions and applications are added to the syntax and reduction rules of $\lambda_{\rightarrow} $, full details of which are found on page 343 of [3].
 
 Adding universal quantification over types means that we're now working with second order logic, which I haven't yet discussed. So I think it is time for...
-<h3>Fun with Quantifiers</h3>
+\section{Fun with Quantifiers}
 First-order logic uses only variables that range over individuals (elements of the domain of discourse)[1]:
 
 For example:
-$latex \forall x \in S\ (x+1 &lt; 12)\ where\ S = \{1,2, \ldots, 10\} &amp;fg=000000&amp;s=1$
+$\forall x \in S\ (x+1 > 12)\ where\ S = \{1,2, \ldots, 10\} $
 
 In second-order logic variables can also range over sets of individuals. As in it allows for quantification over not only individuals (terms in System F), but also over predicates (types in System F) [pg. 341 of 3]
 
 For example:
-$latex \forall x \in Odds(S)\ \exists y \in Evens(S)\ (x+y = 11)\ where\ S = \{1,2, \ldots, 10\} &amp;fg=000000&amp;s=1$
+$\forall x \in Odds(S)\ \exists y \in Evens(S)\ (x+y = 11)\ where\ S = \{1,2, \ldots, 10\} $
 
 We need to remember that we are still playing with intuitionistic logic, so it is worth exploring what quantifiers really mean in this context.
 
 Page 192 of "Lectures on the Curry-Howard Isomorphsim" [2] explains it well enough:
-<blockquote>The intended meaning of "$latex \forall p \varphi(p) &amp;fg=000000&amp;s=1$" is that $latex \varphi(p) &amp;fg=000000&amp;s=1$ holds for all possible meanings of $latex p &amp;fg=000000&amp;s=1$. The meaning of "$latex \exists p \varphi(p) &amp;fg=000000&amp;s=1$" is that $latex \varphi(p) &amp;fg=000000&amp;s=1$ holds for some meaning of $latex p &amp;fg=000000&amp;s=1$. Classically, there are just two possible such meanings: the two truth values. Thus, the statement $latex \forall p \varphi(p) &amp;fg=000000&amp;s=1$ is classically equivalent to $latex \varphi(\top) \wedge \varphi(\bot)&amp;fg=000000&amp;s=1$, and $latex \exists p \varphi(p) &amp;fg=000000&amp;s=1$ is equivalent to $latex \varphi(\top) \vee \varphi(\bot)&amp;fg=000000&amp;s=1$.
+%<blockquote>
+"The intended meaning of "$\forall p \varphi(p) $" is that $\varphi(p) $ holds for all possible meanings of $p $. The meaning of "$\exists p \varphi(p) $" is that $\varphi(p) $ holds for some meaning of $p $. Classically, there are just two possible such meanings: the two truth values. Thus, the statement $\forall p \varphi(p) $ is classically equivalent to $\varphi(\top) \wedge \varphi(\bot)$, and $\exists p \varphi(p) $ is equivalent to $\varphi(\top) \vee \varphi(\bot)$.
 ...
 In the intuitionistic logic, there is no finite set of truth-values, and the propositional quantifiers should be regarded as ranging over some infinite space of predicates.
 
 Note that we deal only with propositions expressible in our language. Indeed, to handle the predicates in a constructive way, we must be able to refer to their proofs.
-<ul>
-  <li>A construction of $latex \forall p \varphi(p)&amp;fg=000000&amp;s=1$ is a method (function) transforming every construction of any proposition P into a proof of $latex \varphi(P)&amp;fg=000000&amp;s=1$.</li>
-  <li>A construction of $latex \exists p \varphi(p)&amp;fg=000000&amp;s=1$ consists of a proposition P, together with a construction of P, and a construction of $latex \varphi(P)&amp;fg=000000&amp;s=1$.</li>
-</ul>
-Syntactically, predicates P must be themselves represented by formulas.</blockquote>
-This explanation still leaves me feeling a bit confused as to the nature of $latex \forall &amp;fg=000000&amp;s=1$ and $latex \exists &amp;fg=000000&amp;s=1$ in intuitionistic logic. Perhaps I'll have to revisit this.
-<h3>Some notes on the Girard-Reynolds Isomorphism</h3>
+\begin{enumerate}
+  \item A construction of $\forall p \varphi(p)$ is a method (function) transforming every construction of any proposition P into a proof of $\varphi(P)$.
+  \item A construction of $\exists p \varphi(p)$ consists of a proposition P, together with a construction of P, and a construction of $\varphi(P)$.
+\end{enumerate}
+Syntactically, predicates P must be themselves represented by formulas.
+%</blockquote>
+
+This explanation still leaves me feeling a bit confused as to the nature of $\forall $ and $\exists $ in intuitionistic logic. Perhaps I'll have to revisit this.
+\section{Some notes on the Girard-Reynolds Isomorphism}
 According to Wadler in [4], in addition to System F, Girard proved a Representation Theorem: every function on natural numbers that can be proved total in second-order predicate calculus can be represented in System F. While Reynolds proved an Abstraction Theorem: every term in System F satisfies a suitable notion of logical relation.
 
 Girard's Representation Theorem results in a projection from second order logic into System F, while Reynolds' Abstraction Theorem results in an embedding of System F into second order logic.
@@ -52,14 +55,12 @@ Quoting Wadler loosely from [4]:
 Second order logic is larger than System F's image under the Curry-Howard isomorphism. Second order logic contains quantifiers over individuals, types, and predicates, while System F only allows for quantification over types. Girard's projection from second order logic onto System F is similar to the Curry-Howard isomorphism, in that it takes propositions to types and proofs to terms, but differs in that it erases information about individuals. This mapping preserves reductions, hence it is no mere surjection but a true epimorphism.
 
 Thus the Reynolds embedding followed by the Girard projection is the identity. While Girard's projection followed by Reynolds' embedding is not since the projection discards all information about individuals.
-<h3>Questions + Other notes:</h3>
+\section{Questions + Other notes:}
 Literature states that type checking in System F is undecidable [pg. 204 of 2]. Yet System F is strongly normalizing [pg. 353 of 3]. This doesn't make sense to me...
 
-Rank-2 polymorphism: Since type reconstruction of System F is undecidable, restrictions are applied to enable practical use in languages. One such restriction is <em>Rank-2 Polymorphism</em>. "A type is said to be of rank 2 if no path from its root to a $latex \forall &amp;fg=000000&amp;s=1$ quantifier passes to the left of 2 or more arrows, when the type is drawn as a tree." [pg. 359 of 3] Juggling the power and practicality of Rank-N restrictions is something I'd like to explore in the future. It is interesting how languages handle this, <a href="http://en.wikibooks.org/wiki/Haskell/Polymorphism">such as Haskell</a>.
+Rank-2 polymorphism: Since type reconstruction of System F is undecidable, restrictions are applied to enable practical use in languages. One such restriction is $Rank-2 Polymorphism$. "A type is said to be of rank 2 if no path from its root to a $\forall $ quantifier passes to the left of 2 or more arrows, when the type is drawn as a tree." [pg. 359 of 3] Juggling the power and practicality of Rank-N restrictions is something I'd like to explore in the future. It is interesting how languages handle this, such as Haskell.
 
-Next up I delve into <a href="http://cubeoflambda.wordpress.com/2011/11/16/parametricity/">parametricity</a>
-
-[1]: <a href="http://en.wikipedia.org/wiki/Second-order_logic">Wikipedia: Second-order Logic</a>
-[2]: <a href="http://folli.loria.fr/cds/1999/library/pdf/curry-howard.pdf">Lectures on the Curry-Howard Isomorphism</a> (free old version)
-[3]: <a href="http://www.amazon.com/Types-Programming-Languages-Benjamin-Pierce/dp/0262162091">Types and Programming Languages</a>
-[4]: <a href="http://www.sciencedirect.com/science/article/pii/S0304397506009236">Wadler's "The Girard-Reynolds Isomorphism"</a>
+%[1]: <a href="http://en.wikipedia.org/wiki/Second-order_logic">Wikipedia: Second-order Logic</a>
+%[2]: <a href="http://folli.loria.fr/cds/1999/library/pdf/curry-howard.pdf">Lectures on the Curry-Howard Isomorphism</a> (free old version)
+%[3]: <a href="http://www.amazon.com/Types-Programming-Languages-Benjamin-Pierce/dp/0262162091">Types and Programming Languages</a>
+%[4]: <a href="http://www.sciencedirect.com/science/article/pii/S0304397506009236">Wadler's "The Girard-Reynolds Isomorphism"</a>

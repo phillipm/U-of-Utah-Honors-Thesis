@@ -4,25 +4,24 @@
 \chapter{INTUITIONISTIC LOGIC}\label{ch:logic}
 The Curry-Howard Isomorphism is a correspondence between typed lambda calculus and a stricter subset of classical logic called Constructive Logic, or also Intuitionistic Logic. So what makes Intuitionistic Logic so special?
 
-Simply stated, intuitionistic logic is such that proving a theorem is done by providing an example that satisfies that theorem. Below are some excerpts from Chapter 3. $latex \S 13$ of Kleene's "<a href="http://www.amazon.com/Introduction-Metamathematics-Stephen-Cole-Kleene/dp/0923891579">Introduction to Metamathematics</a>", which offers a good introduction to intuitionistic logic. Afterwards I will provide a more formal definition.
+Simply stated, intuitionistic logic is such that proving a theorem is done by providing an example that satisfies that theorem. Below are some excerpts from Chapter 3. $\S 13$ of Kleene's "Introduction to Metamathematics", which offers a good introduction to intuitionistic logic. Afterwards I will provide a more formal definition.
 
 Intuitionistic logic originates from mathematicians concerned about unsound applications of classical logic. From Weyl 1946, "According to his view and reading of history, classical logic was abstracted from the mathematics of finite sets and their subsets. ... Forgetful of this limited origin, one afterwards mistook that logic for something above and prior to all mathematics, and finally applied it, without justification, to the mathematics of infinite sets."
 
-Classical mathematical logic is composed of intuitionistic and non-intuitionistic parts. "The non-intuitionistic mathematics which culminated in the theories of Weierstrass, Dedekind, and Cantor, and the intuitionistic mathematics of Brouwer, differ essentially in their view of the infinite. In the former, the infinite is treated as <em>actual</em> or <em>completed</em> or <em>extended</em> or <em>existential</em>. ... in the latter, the infinite is treated only as <em>potential</em> or <em>becoming</em> or <em>constructive</em>." $latex \S 13$ of [1]
+Classical mathematical logic is composed of intuitionistic and non-intuitionistic parts. "The non-intuitionistic mathematics which culminated in the theories of Weierstrass, Dedekind, and Cantor, and the intuitionistic mathematics of Brouwer, differ essentially in their view of the infinite. In the former, the infinite is treated as $actual$ or $completed$ or $extended$ or $existential$. ... in the latter, the infinite is treated only as $potential$ or $becoming$ or $constructive$." $\S 13$ of [1]
 
-"In classical mathematics there occur <em>non-constructive</em> or <em>indirect</em> existence proofs, which the intuitionists do not accept. For example, to prove <em>there exists an n such that P(n)</em>, the classical mathematics may deduce a contradiction from the assumption <em>for all n, not P(n)</em>. Under both the classical and the intuitionistic logic, by <a href="http://en.wikipedia.org/wiki/Reductio_ad_absurdum">reductio ab absurdum</a> this gives <em>not for all n, not P(n)</em>. The classical logic allows this result to be transformed into <em>there exists an n such that P(n)</em>, but not (in general) the intuitionistic. Such a classical existence proof leaves us no nearer than before the proof was given to having an example of a number <em>n</em> such that <em>P(n)</em>." $latex \S 13$ of [1]
+"In classical mathematics there occur $non-constructive$ or $indirect$ existence proofs, which the intuitionists do not accept. For example, to prove $there exists an n such that P(n)$, the classical mathematics may deduce a contradiction from the assumption $for all n, not P(n)$. Under both the classical and the intuitionistic logic, by reductio ab absurdum this gives $not for all n, not P(n)$. The classical logic allows this result to be transformed into $there exists an n such that P(n)$, but not (in general) the intuitionistic. Such a classical existence proof leaves us no nearer than before the proof was given to having an example of a number $n$ such that $P(n)$." $\S 13$ of [1]
 
-<img class="size-full wp-image-26 aligncenter" title="tetraktys" src="http://cubeoflambda.files.wordpress.com/2011/08/tetraktys.png" alt="" width="50" height="40" />
 
-<h3>Why does Brouwer's intuitionistic logic reject the law of excluded middle?</h3>
-"Brouwer [1908] observed that LEM was abstracted from finite situations, then extended without justification to statements about infinite collections. For example, if x, y range over the natural numbers 0, 1, 2, … and B(x) abbreviates the property (there is a y &gt; x such that both y and y+2 are prime numbers), then we have no general method for deciding whether B(x) is true or false for arbitrary x, so ∀x(B(x) ∨ ¬B(x)) cannot be asserted in the present state of our knowledge. And if A abbreviates the statement ∀xB(x), then (A ∨ ¬A) cannot be asserted because neither A nor (¬A) has yet been proved." [2] (Also see pg. 47 of [1])
+\section{Why does Brouwer's intuitionistic logic reject the law of excluded middle?}
+"Brouwer [1908] observed that LEM was abstracted from finite situations, then extended without justification to statements about infinite collections. For example, if x, y range over the natural numbers 0, 1, 2, … and B(x) abbreviates the property (there is a y > x such that both y and y+2 are prime numbers), then we have no general method for deciding whether B(x) is true or false for arbitrary x, so ∀x(B(x) ∨ ¬B(x)) cannot be asserted in the present state of our knowledge. And if A abbreviates the statement ∀xB(x), then (A ∨ ¬A) cannot be asserted because neither A nor (¬A) has yet been proved." [2] (Also see pg. 47 of [1])
 
-<h3>Why does intuitionistic logic exclude the double negation axiom?</h3>
+\section{Why does intuitionistic logic exclude the double negation axiom?}
 ...
 
-<h3>Formal definition of intuitionistic logic:</h3>
+\section{Formal definition of intuitionistic logic:}
 ...
 
 
-[1] Kleene, Stephen, "<a href="http://www.amazon.com/Introduction-Metamathematics-Stephen-Cole-Kleene/dp/0923891579">Introduction to Metamathematics</a>", 1964
-[2] Moschovakis, Joan, "Intuitionistic Logic", The Stanford Encyclopedia of Philosophy (Summer 2010 Edition), Edward N. Zalta (ed.), URL = &lt;<a href="http://plato.stanford.edu/archives/sum2010/entries/logic-intuitionistic/">http://plato.stanford.edu/archives/sum2010/entries/logic-intuitionistic/</a>&gt;
+%[1] Kleene, Stephen, "<a href="http://www.amazon.com/Introduction-Metamathematics-Stephen-Cole-Kleene/dp/0923891579">Introduction to Metamathematics</a>", 1964
+%[2] Moschovakis, Joan, "Intuitionistic Logic", The Stanford Encyclopedia of Philosophy (Summer 2010 Edition), Edward N. Zalta (ed.), URL = &lt;<a href="http://plato.stanford.edu/archives/sum2010/entries/logic-intuitionistic/">http://plato.stanford.edu/archives/sum2010/entries/logic-intuitionistic/</a>&gt;

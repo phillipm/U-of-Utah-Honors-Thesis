@@ -1,148 +1,148 @@
 \chapter{PARAMETRICITY}\label{ch:parametricity}
-With universal quantification ($latex \forall &amp;fg=000000&amp;s=1$) over types, System F allows us to reason about polymorphic functions. System F's polymorphism is called <em>parametric polymorphism</em>, as compared to the <em>ad-hoc polymorphism</em> of method overloading in most imperative languages. The generality of this parametric polymorphism has much to offer.
+With universal quantification ($\forall $) over types, System F allows us to reason about polymorphic functions. System F's polymorphism is called $parametric polymorphism$, as compared to the $ad-hoc polymorphism$ of method overloading in most imperative languages. The generality of this parametric polymorphism has much to offer.
 
-<h3>Theorems for Free</h3>
+\section{Theorems for Free}
 In "Theorems for Free!" [2], Wadler refines some ideas on parametric polymorphism presented by Reynolds in [9]. The overarching idea is that parametrically polymorphic functions behave uniformly across all types. With this uniformity we can derive certain simple theorems from only the type signature.
 
-Take this polymorphic function $latex f : \forall A . A \rightarrow A &amp;fg=000000&amp;s=1$
-If we exclude the ability to do runtime type analysis [3], there is no way to do operations that distinguish between types. Hence, the only possible function body that could inhabit $latex f &amp;fg=000000&amp;s=1$ is the identity function $latex f = \lambda A\ .\ \lambda x : A\ .\ x &amp;fg=000000&amp;s=1$
+Take this polymorphic function $f : \forall A . A \rightarrow A $
+If we exclude the ability to do runtime type analysis [3], there is no way to do operations that distinguish between types. Hence, the only possible function body that could inhabit $f $ is the identity function $f = \lambda A\ .\ \lambda x : A\ .\ x $
 
-Extending this idea to functions that operate over lists, a function such as $latex g : \forall A . [A] \rightarrow [A] &amp;fg=000000&amp;s=1$ can only operate over the elements provided to it.
+Extending this idea to functions that operate over lists, a function such as $g : \forall A . [A] \rightarrow [A] $ can only operate over the elements provided to it.
 
 Wadler, making use of this, shows that polymorphic functions in System F commute with all functions that operate on more specific types.
 
 For instance, given function signatures
-$latex f : \forall A . [A] \rightarrow [A] &amp;fg=000000&amp;s=1$
-$latex g : Char \rightarrow Int &amp;fg=000000&amp;s=1$
+$f : \forall A . [A] \rightarrow [A] $
+$g : Char \rightarrow Int $
 then
-$latex map\ g \circ f_{Char} \equiv f_{Int} \circ map\ g&amp;fg=000000&amp;s=1$
+$map\ g \circ f_{Char} \equiv f_{Int} \circ map\ g$
 
-Below is a continuation of this example in Haskell using the <a href="http://en.wikibooks.org/wiki/Haskell/Existentially_quantified_types">ExistentialQuantification</a> extension. We let <em>f</em> be the <em>reverse</em> function, and <em>g</em> be <em>ord</em>, which takes characters to their ascii values.
-<pre><font color="Green">{-# LANGUAGE ExistentialQuantification #-}</font>
+Below is a continuation of this example in Haskell using the ExistentialQuantification extension. We let $f$ be the $reverse$ function, and $g$ be $ord$, which takes characters to their ascii values.
+%<pre><font color="Green">{-# LANGUAGE ExistentialQuantification #-}</font>
 
-f <font color="Blue">::</font> <u><font color="Green">forall</font></u> a <font color="Blue">.</font> <font color="Blue">[</font>a<font color="Blue">]</font> <font color="Blue">-&gt;</font> <font color="Blue">[</font>a<font color="Blue">]</font>
-f <font color="Blue">=</font> reverse
+%f <font color="Blue">::</font> <u><font color="Green">forall</font></u> a <font color="Blue">.</font> <font color="Blue">[</font>a<font color="Blue">]</font> <font color="Blue">-&gt;</font> <font color="Blue">[</font>a<font color="Blue">]</font>
+%f <font color="Blue">=</font> reverse
 
-g <font color="Blue">::</font> Char <font color="Blue">-&gt;</font> Int
-g <font color="Blue">=</font> ord
+%g <font color="Blue">::</font> Char <font color="Blue">-&gt;</font> Int
+%g <font color="Blue">=</font> ord
 
-Main<font color="Blue">*&gt;</font> map g <font color="Blue">.</font> f <font color="Blue">$</font> <font color="Blue">[</font><font color="Red">'a'</font><font color="Blue">..</font><font color="Red">'f'</font><font color="Blue">]</font>
-  <font color="Blue">[</font><font color="Red">102</font><font color="Blue">,</font><font color="Red">101</font><font color="Blue">,</font><font color="Red">100</font><font color="Blue">,</font><font color="Red">99</font><font color="Blue">,</font><font color="Red">98</font><font color="Blue">,</font><font color="Red">97</font><font color="Blue">]</font>
+%Main<font color="Blue">*&gt;</font> map g <font color="Blue">.</font> f <font color="Blue">$</font> <font color="Blue">[</font><font color="Red">'a'</font><font color="Blue">..</font><font color="Red">'f'</font><font color="Blue">]</font>
+  %<font color="Blue">[</font><font color="Red">102</font><font color="Blue">,</font><font color="Red">101</font><font color="Blue">,</font><font color="Red">100</font><font color="Blue">,</font><font color="Red">99</font><font color="Blue">,</font><font color="Red">98</font><font color="Blue">,</font><font color="Red">97</font><font color="Blue">]</font>
 
-Main<font color="Blue">*&gt;</font> f <font color="Blue">.</font> map g <font color="Blue">$</font> <font color="Blue">[</font><font color="Red">'a'</font><font color="Blue">..</font><font color="Red">'f'</font><font color="Blue">]</font>
-  <font color="Blue">[</font><font color="Red">102</font><font color="Blue">,</font><font color="Red">101</font><font color="Blue">,</font><font color="Red">100</font><font color="Blue">,</font><font color="Red">99</font><font color="Blue">,</font><font color="Red">98</font><font color="Blue">,</font><font color="Red">97</font><font color="Blue">]</font>
-</pre>
+%Main<font color="Blue">*&gt;</font> f <font color="Blue">.</font> map g <font color="Blue">$</font> <font color="Blue">[</font><font color="Red">'a'</font><font color="Blue">..</font><font color="Red">'f'</font><font color="Blue">]</font>
+  %<font color="Blue">[</font><font color="Red">102</font><font color="Blue">,</font><font color="Red">101</font><font color="Blue">,</font><font color="Red">100</font><font color="Blue">,</font><font color="Red">99</font><font color="Blue">,</font><font color="Red">98</font><font color="Blue">,</font><font color="Red">97</font><font color="Blue">]</font>
+%</pre>
 
-<h3>Pffft, tell me something useful</h3>
+\section{Pffft, tell me something useful}
 While trivial looking, these simple commuting theorems are actually useful. They enable us to add function commutativity to our arsenal of algebraic manipulations when we are reasoning about programs [2]. In addition, [1] states that the reordering of function applications can lead to improved efficiency of code by enabling additional transformations and analysis.
 
 That's cool, but still kind of boring and aides little when using real world languages. So what's up with parametricity these days and can it be useful in the context of modern functional languages?
 
-<h3>Parametricity with Haskell</h3>
+\section{Parametricity with Haskell}
 You may have noticed by now that languages like Haskell have runtime type analysis, as well as imprecise error semantics, both of which prevent us from deriving free theorems from polymorphic functions. 
 
 By imprecise error semantics, we mean that the error raised by a program is not guaranteed to be the same exception that would be encountered by a straight forward sequential execution [6]. This means that when making use of free theorems in Haskell, there is no guarantee that new errors will won't be introduced. 
 
 Take the example provided in Stenger and Voigtländer's paper "Parametricity for Haskell with Imprecise Error Semantics" [1]:
-<pre><font color="Green">-- produces ***Exception: divide by zero</font>
-l <font color="Blue">=</font> <font color="Blue">[</font><font color="Blue">[</font>i<font color="Blue">]</font> <font color="Blue">|</font> i <font color="Blue">&lt;-</font> <font color="Blue">[</font><font color="Red">1</font><font color="Blue">..</font><font color="Blue">(</font>div <font color="Red">1</font> <font color="Red">0</font><font color="Blue">)</font><font color="Blue">]</font><font color="Blue">]</font>
+%<pre><font color="Green">-- produces ***Exception: divide by zero</font>
+%l <font color="Blue">=</font> <font color="Blue">[</font><font color="Blue">[</font>i<font color="Blue">]</font> <font color="Blue">|</font> i <font color="Blue">&lt;-</font> <font color="Blue">[</font><font color="Red">1</font><font color="Blue">..</font><font color="Blue">(</font>div <font color="Red">1</font> <font color="Red">0</font><font color="Blue">)</font><font color="Blue">]</font><font color="Blue">]</font>
 
-<font color="Green">-- can produce *** Exception: Prelude:tail: empty list</font>
-tail
+%<font color="Green">-- can produce *** Exception: Prelude:tail: empty list</font>
+%tail
 
-<font color="Green">-- can only propagate errors</font>
-null
-takeWhile
+%<font color="Green">-- can only propagate errors</font>
+%null
+%takeWhile
 
-<font color="Green">-- only propagates errors (This makes no sense to me!)</font>
-map tail
+%<font color="Green">-- only propagates errors (This makes no sense to me!)</font>
+%map tail
 
-<font color="Green">-- can possibly produce empty list or divide by zero errors</font>
-<font color="Blue">(</font>takeWhile <font color="Blue">(</font>null <font color="Blue">.</font> tail<font color="Blue">)</font> l<font color="Blue">)</font>
+%<font color="Green">-- can possibly produce empty list or divide by zero errors</font>
+%<font color="Blue">(</font>takeWhile <font color="Blue">(</font>null <font color="Blue">.</font> tail<font color="Blue">)</font> l<font color="Blue">)</font>
 
-<font color="Green">-- by parametric free theorems:</font>
-map tail <font color="Blue">(</font>takeWhile <font color="Blue">(</font>null <font color="Blue">.</font> tail<font color="Blue">)</font> l<font color="Blue">)</font> <font color="Blue">==</font> takeWhile null <font color="Blue">(</font>map tail l<font color="Blue">)</font>
+%<font color="Green">-- by parametric free theorems:</font>
+%map tail <font color="Blue">(</font>takeWhile <font color="Blue">(</font>null <font color="Blue">.</font> tail<font color="Blue">)</font> l<font color="Blue">)</font> <font color="Blue">==</font> takeWhile null <font color="Blue">(</font>map tail l<font color="Blue">)</font>
 
-<font color="Green">-- but this could produce 2 different errors</font>
-map tail <font color="Blue">(</font>takeWhile <font color="Blue">(</font>null <font color="Blue">.</font> tail<font color="Blue">)</font> l<font color="Blue">)</font>
+%<font color="Green">-- but this could produce 2 different errors</font>
+%map tail <font color="Blue">(</font>takeWhile <font color="Blue">(</font>null <font color="Blue">.</font> tail<font color="Blue">)</font> l<font color="Blue">)</font>
 
-<font color="Green">-- while this could only produce 1 error</font>
-takeWhile null <font color="Blue">(</font>map tail l<font color="Blue">)</font></pre>
+%<font color="Green">-- while this could only produce 1 error</font>
+%takeWhile null <font color="Blue">(</font>map tail l<font color="Blue">)</font></pre>
 
-This example shows that Haskell's non-deterministic error semantics might introduce new errors when free theorems are used. The one problem I have with this example is the authors claim that <em>map tail</em> only propagates errors and doesn't actually introduce any new errors. This disagrees with me because <em>map tail [[1], [], [2]]</em> will obviously raise an error. I'll have to take a deeper look at this. Regardless, [1] goes on to formulate notations for using free theorems in the presence of imprecise errors.
+This example shows that Haskell's non-deterministic error semantics might introduce new errors when free theorems are used. The one problem I have with this example is the authors claim that $map tail$ only propagates errors and doesn't actually introduce any new errors. This disagrees with me because $map tail [[1], [], [2]]$ will obviously raise an error. I'll have to take a deeper look at this. Regardless, [1] goes on to formulate notations for using free theorems in the presence of imprecise errors.
 
-As for runtime type analysis, the essence of the problem is that polymorphic functions can treat inputs of different types non-uniformly. Hence there is no straight forward way to derive free theorems from polymorphic functions that analyze types, such as the function <em>f'</em> derived from the example in [3]:
+As for runtime type analysis, the essence of the problem is that polymorphic functions can treat inputs of different types non-uniformly. Hence there is no straight forward way to derive free theorems from polymorphic functions that analyze types, such as the function $f'$ derived from the example in [3]:
 
-<pre>
-<font color="Green">-- Without runtime type analysis functions of type a -&gt; a</font>
-<font color="Green">-- can only be inhabited by the identity</font>
-f <font color="Blue">::</font> <u><font color="Green">forall</font></u> a <font color="Blue">.</font> a <font color="Blue">-&gt;</font> a
-f x <font color="Blue">=</font> x
+%<pre>
+%<font color="Green">-- Without runtime type analysis functions of type a -&gt; a</font>
+%<font color="Green">-- can only be inhabited by the identity</font>
+%f <font color="Blue">::</font> <u><font color="Green">forall</font></u> a <font color="Blue">.</font> a <font color="Blue">-&gt;</font> a
+%f x <font color="Blue">=</font> x
 
-<font color="Green">-- With runtime type analysis anything is possible!</font>
-<font color="Green">-- NOTE: This isn't actually valid Haskell,</font>
-<font color="Green">-- but I couldn't figure out how to do runtime type analysis</font>
-f' <font color="Blue">::</font> <u><font color="Green">forall</font></u> a <font color="Blue">.</font> a <font color="Blue">-&gt;</font> a
-f' x <font color="Blue">=</font> <u><font color="Green">if</font></u> <font color="Blue">(</font>typeOf x<font color="Blue">)</font> <font color="Blue">==</font> <font color="Blue">(</font>typeOf <font color="Red">1</font><font color="Blue">)</font>
-         <u><font color="Green">then</font></u> succ x
-         <u><font color="Green">else</font></u> x
+%<font color="Green">-- With runtime type analysis anything is possible!</font>
+%<font color="Green">-- NOTE: This isn't actually valid Haskell,</font>
+%<font color="Green">-- but I couldn't figure out how to do runtime type analysis</font>
+%f' <font color="Blue">::</font> <u><font color="Green">forall</font></u> a <font color="Blue">.</font> a <font color="Blue">-&gt;</font> a
+%f' x <font color="Blue">=</font> <u><font color="Green">if</font></u> <font color="Blue">(</font>typeOf x<font color="Blue">)</font> <font color="Blue">==</font> <font color="Blue">(</font>typeOf <font color="Red">1</font><font color="Blue">)</font>
+         %<u><font color="Green">then</font></u> succ x
+         %<u><font color="Green">else</font></u> x
 
-g <font color="Blue">::</font> <u><font color="Green">forall</font></u> a <font color="Blue">.</font> a <font color="Blue">-&gt;</font> Int
-g <u><font color="Green">_</font></u> <font color="Blue">=</font> <font color="Red">42</font>
+%g <font color="Blue">::</font> <u><font color="Green">forall</font></u> a <font color="Blue">.</font> a <font color="Blue">-&gt;</font> Int
+%g <u><font color="Green">_</font></u> <font color="Blue">=</font> <font color="Red">42</font>
 
-<font color="Green">-- The free theorem for f and g:</font>
-f <font color="Blue">.</font> g <font color="Blue">==</font> g <font color="Blue">.</font> f
+%<font color="Green">-- The free theorem for f and g:</font>
+%f <font color="Blue">.</font> g <font color="Blue">==</font> g <font color="Blue">.</font> f
 
-<font color="Green">-- No free theorem for f' and g since:</font>
-f' <font color="Blue">.</font> g <font color="Blue">/=</font> g <font color="Blue">.</font> f'
-</pre>
+%<font color="Green">-- No free theorem for f' and g since:</font>
+%f' <font color="Blue">.</font> g <font color="Blue">/=</font> g <font color="Blue">.</font> f'
+%</pre>
 
-[3] remedies this problem by using representation types. Languages such as $latex \lambda_R &amp;fg=000000&amp;s=1$ use term representation of types to simulate runtime type analysis [7]. The idea is to have terms represent types, so if term <em>e</em> represents type <em>t</em>, then term <em>e</em> has type <em>R t</em>. The introduction of GADTs (generalized algebraic datatypes) has enabled representation types to be used with parametricity. This is best seen in the concrete with an example from [3] that uses Haskell's <a href="http://en.wikibooks.org/wiki/Haskell/GADT">GADT language extension</a>:
-<pre><font color="Green">{-# LANGUAGE GADTs #-}</font>
+[3] remedies this problem by using representation types. Languages such as $\lambda_R $ use term representation of types to simulate runtime type analysis [7]. The idea is to have terms represent types, so if term $e$ represents type $t$, then term $e$ has type $R t$. The introduction of GADTs (generalized algebraic datatypes) has enabled representation types to be used with parametricity. This is best seen in the concrete with an example from [3] that uses Haskell's <a href="http://en.wikibooks.org/wiki/Haskell/GADT">GADT language extension</a>:
+%<pre><font color="Green">{-# LANGUAGE GADTs #-}</font>
 
-<font color="Green">-- representation type of Int, Func, and Any</font>
-<u><font color="Green">data</font></u> R a <u><font color="Green">where</font></u>
-  Rint <font color="Blue">::</font> R Int
-  Rarrow <font color="Blue">::</font> R a <font color="Blue">-&gt;</font> R b <font color="Blue">-&gt;</font> R <font color="Blue">(</font>a <font color="Blue">-&gt;</font> b<font color="Blue">)</font>
-  Rany <font color="Blue">::</font> R a
+%<font color="Green">-- representation type of Int, Func, and Any</font>
+%<u><font color="Green">data</font></u> R a <u><font color="Green">where</font></u>
+  %Rint <font color="Blue">::</font> R Int
+  %Rarrow <font color="Blue">::</font> R a <font color="Blue">-&gt;</font> R b <font color="Blue">-&gt;</font> R <font color="Blue">(</font>a <font color="Blue">-&gt;</font> b<font color="Blue">)</font>
+  %Rany <font color="Blue">::</font> R a
 
-<font color="Green">-- runtime type analysis using representation types</font>
-g <font color="Blue">::</font> <font color="Blue">(</font>R a<font color="Blue">)</font> <font color="Blue">-&gt;</font> a <font color="Blue">-&gt;</font> a
-g t y <font color="Blue">=</font> <u><font color="Green">case</font></u> t <u><font color="Green">of</font></u>
-             Rint <font color="Blue">-&gt;</font> succ y
-             Rany <font color="Blue">-&gt;</font> y
+%<font color="Green">-- runtime type analysis using representation types</font>
+%g <font color="Blue">::</font> <font color="Blue">(</font>R a<font color="Blue">)</font> <font color="Blue">-&gt;</font> a <font color="Blue">-&gt;</font> a
+%g t y <font color="Blue">=</font> <u><font color="Green">case</font></u> t <u><font color="Green">of</font></u>
+             %Rint <font color="Blue">-&gt;</font> succ y
+             %Rany <font color="Blue">-&gt;</font> y
 
-<font color="Blue">*</font>Main<font color="Blue">&gt;</font>g Rint <font color="Red">1</font>
-<font color="Red">2</font>
+%<font color="Blue">*</font>Main<font color="Blue">&gt;</font>g Rint <font color="Red">1</font>
+%<font color="Red">2</font>
 
-<font color="Blue">*</font>Main<font color="Blue">&gt;</font>g Rany <font color="Red">'a'</font>
-<font color="Red">'a'</font>
+%<font color="Blue">*</font>Main<font color="Blue">&gt;</font>g Rany <font color="Red">'a'</font>
+%<font color="Red">'a'</font>
 
-<font color="Blue">*</font>Main<font color="Blue">&gt;</font>g Rint <font color="Red">'a'</font>
-<font color="Blue">***</font>Couldn't match expected <u><font color="Green">type</font></u> <font color="Blue">`</font>Int' with actual <u><font color="Green">type</font></u> <font color="Blue">`</font>Char'
-</pre>
+%<font color="Blue">*</font>Main<font color="Blue">&gt;</font>g Rint <font color="Red">'a'</font>
+%<font color="Blue">***</font>Couldn't match expected <u><font color="Green">type</font></u> <font color="Blue">`</font>Int' with actual <u><font color="Green">type</font></u> <font color="Blue">`</font>Char'
+%</pre>
 
-In the example above, the general free theorem $latex (g[\tau]\ r) \circ h \cong h \circ (g[\tau]\ r) &amp;fg=000000&amp;s=1$ doesn't hold because of $latex R_{int} &amp;fg=000000&amp;s=1$. But of course if we are analyzing $latex R_{any} &amp;fg=000000&amp;s=1$ it holds: $latex (g[\tau]\ (R_{any}[\tau])) \circ h \cong h \circ (g[\tau]\ (R_{any}[\tau])) &amp;fg=000000&amp;s=1$  [3]
+In the example above, the general free theorem $(g[\tau]\ r) \circ h \cong h \circ (g[\tau]\ r) $ doesn't hold because of $R_{int} $. But of course if we are analyzing $R_{any} $ it holds: $(g[\tau]\ (R_{any}[\tau])) \circ h \cong h \circ (g[\tau]\ (R_{any}[\tau])) $  [3]
 
 The work in [3] starts to lay the theoretical foundations needed to start reasoning about complex languages such as Haskell in terms of parametricity.
 
-<h3>Parametricity and Program Synthesis</h3>
+\section{Parametricity and Program Synthesis}
 This brings me to how parametricity might help with program synthesis. The simple parametrically polymorphic functions presented in [2] seem much more tractable to synthesize when compared to functions with arbitrary type signatures. This is because the polymorphism guarantees that parameters will be treated uniformly and values external to the input exhibit little influence over the output. This greatly reduces the problem space.
 
-But is synthesizing parametrically polymorphic functions actually useful? In most cases these functions are extremely simple and trivial, such as <em>tail</em>, <em>reverse</em>, <em>id</em>, etc. Future work (on GADTs), as discussed in [3], might lead to more nuanced and powerful reasoning of parametric polymorphism.
+But is synthesizing parametrically polymorphic functions actually useful? In most cases these functions are extremely simple and trivial, such as $tail$, $reverse$, $id$, etc. Future work (on GADTs), as discussed in [3], might lead to more nuanced and powerful reasoning of parametric polymorphism.
 
-<h3>Conclusion</h3>
+\section{Conclusion}
 This post is spread quite thin; I've given an introduction to parametricity and free theorems, and shown how current research is working to make parametricity applicable to modern languages such as Haskell. Lastly I've punted on how parametricity might be useful to program synthesis.
 
 Hopefully this has sparked your interest in parametricity. In addition to the papers I presented here, there is some really interesting research going on in this area. "Generalizing Parametricity Using Information-flow" [4] looks to provide security and confidentiality to module writers utilizing parametric polymorphism in the face of runtime type analysis. "A Logic for Parametric Polymorphism" [8] introduces a logic that formalizes parametric polymorphism and follows in the steps of LCF, taking the first steps towards creating a full fledged logic for polymorphic programs.
 
 It is time to move on, next up I will cover GADTs and Dependent Types.
 
-[1] <a href="www.iai.uni-bonn.de/~jv/TUD-FI08-08.pdf">Parametricity for Haskell with Imprecise Error Semantics</a>
-[2] <a href="http://homepages.inf.ed.ac.uk/wadler/papers/free/free.ps">Theorems for Free!</a>
-[3] <a href="www.seas.upenn.edu/~sweirich/papers/rtheorems07.pdf">Free Theorems and Runtime Type Representations</a>
-[4] <a href="http://repository.upenn.edu/cis_papers/220/">Generalizing Parametricity Using Information-flow</a>
-[6] <a href="http://research.microsoft.com/en-us/um/people/simonpj/papers/imprecise-exn.htm">A Semantics for Imprecise Exceptions</a>
-[7] <a href="www.cs.cornell.edu/talc/papers/typepass.pdf">Intensional Polymorphism in Type Erasure Semantics</a> 
-[8] <a href="http://www.era.lib.ed.ac.uk/bitstream/1842/205/1/Par_Poly.pdf">A Logic for Parametric Polymorphism</a>
-[9] Types, Abstractions, and Parametric Polymorphism
+%[1] <a href="www.iai.uni-bonn.de/~jv/TUD-FI08-08.pdf">Parametricity for Haskell with Imprecise Error Semantics</a>
+%[2] <a href="http://homepages.inf.ed.ac.uk/wadler/papers/free/free.ps">Theorems for Free!</a>
+%[3] <a href="www.seas.upenn.edu/~sweirich/papers/rtheorems07.pdf">Free Theorems and Runtime Type Representations</a>
+%[4] <a href="http://repository.upenn.edu/cis_papers/220/">Generalizing Parametricity Using Information-flow</a>
+%[6] <a href="http://research.microsoft.com/en-us/um/people/simonpj/papers/imprecise-exn.htm">A Semantics for Imprecise Exceptions</a>
+%[7] <a href="www.cs.cornell.edu/talc/papers/typepass.pdf">Intensional Polymorphism in Type Erasure Semantics</a> 
+%[8] <a href="http://www.era.lib.ed.ac.uk/bitstream/1842/205/1/Par_Poly.pdf">A Logic for Parametric Polymorphism</a>
+%[9] Types, Abstractions, and Parametric Polymorphism
