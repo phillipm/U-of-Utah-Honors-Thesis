@@ -5,12 +5,18 @@ Girard developed System F as a proof notation for second-order logic, while Reyn
 \section{Quick Intuition on System F}
 The practical idea of System F is to add polymorphism to typed lambda calculus. For instance if we want to define the untyped function $composition = \lambda f. \lambda g. \lambda x. f\ (g\ x) $ in $\lambda_{\rightarrow} $ (simply typed lambda calculus), we would need to define an infinite number of functions in order to satisfy all possible types:
 
-$compositionInt = \lambda f:Int \rightarrow Int.\ \lambda g:Int \rightarrow Int.\ \lambda x:Int.\ f\ (g\ x) $
-$compositionBool = \lambda f:Bool \rightarrow Bool.\ \lambda g:Bool \rightarrow Bool.\ \lambda x:Bool.\ f\ (g\ x) $
-$\ldots $
+\begin{equation*}
+  \begin{aligned}
+    & compositionInt = \lambda f:Int \rightarrow Int.\ \lambda g:Int \rightarrow Int.\ \lambda x:Int.\ f\ (g\ x) \\
+    & compositionBool = \lambda f:Bool \rightarrow Bool.\ \lambda g:Bool \rightarrow Bool.\ \lambda x:Bool.\ f\ (g\ x)\\
+    & \ldots
+  \end{aligned}
+\end{equation*}
 
 To circumvent this, we add universal quantification ($\forall $) over types to the calculi and call it $\lambda_{P} $. The composition function now looks like this:
-$composition = \lambda X.\ \lambda f:X \rightarrow X.\ \lambda g:X \rightarrow X.\ \lambda x:X.\ f\ (g\ x) $
+\begin{equation*}
+  composition = \lambda X.\ \lambda f:X \rightarrow X.\ \lambda g:X \rightarrow X.\ \lambda x:X.\ f\ (g\ x)
+\end{equation*}
 
 The idea is that the type is abstracted out of the term, allowing for type variables to later be applied to it:
 $composition [Int] \rightarrow [X \mapsto Int] composition $
@@ -33,6 +39,7 @@ We need to remember that we are still playing with intuitionistic logic, so it i
 
 Page 192 of \cite{CHnotes} explains it well enough:
 %<blockquote>
+\begin{quote}
 "The intended meaning of "$\forall p \varphi(p) $" is that $\varphi(p) $ holds for all possible meanings of $p $. The meaning of "$\exists p \varphi(p) $" is that $\varphi(p) $ holds for some meaning of $p $. Classically, there are just two possible such meanings: the two truth values. Thus, the statement $\forall p \varphi(p) $ is classically equivalent to $\varphi(\top) \wedge \varphi(\bot)$, and $\exists p \varphi(p) $ is equivalent to $\varphi(\top) \vee \varphi(\bot)$.
 ...
 In the intuitionistic logic, there is no finite set of truth-values, and the propositional quantifiers should be regarded as ranging over some infinite space of predicates.
@@ -42,8 +49,9 @@ Note that we deal only with propositions expressible in our language. Indeed, to
   \item A construction of $\forall p \varphi(p)$ is a method (function) transforming every construction of any proposition P into a proof of $\varphi(P)$.
   \item A construction of $\exists p \varphi(p)$ consists of a proposition P, together with a construction of P, and a construction of $\varphi(P)$.
 \end{enumerate}
-Syntactically, predicates P must be themselves represented by formulas.
+Syntactically, predicates P must be themselves represented by formulas."
 %</blockquote>
+\end{quote}
 
 This explanation still leaves me feeling a bit confused as to the nature of $\forall $ and $\exists $ in intuitionistic logic. Perhaps I'll have to revisit this.
 \section{Some notes on the Girard-Reynolds Isomorphism}
@@ -58,4 +66,4 @@ Thus the Reynolds embedding followed by the Girard projection is the identity. W
 \section{Questions + Other notes:}
 Literature states that type checking in System F is undecidable (pg. 204 of \cite{CHnotes}). Yet System F is strongly normalizing (pg. 353 of \cite{tapl}). This doesn't make sense to me...
 
-Rank-2 polymorphism: Since type reconstruction of System F is undecidable, restrictions are applied to enable practical use in languages. One such restriction is $Rank-2 Polymorphism$. "A type is said to be of rank 2 if no path from its root to a $\forall $ quantifier passes to the left of 2 or more arrows, when the type is drawn as a tree." (pg. 359 of \cite{tapl}) Juggling the power and practicality of Rank-N restrictions is something I'd like to explore in the future. It is interesting how languages handle this, such as Haskell.
+Rank-2 polymorphism: Since type reconstruction of System F is undecidable, restrictions are applied to enable practical use in languages. One such restriction is \emph{Rank-2 Polymorphism}. "A type is said to be of rank 2 if no path from its root to a $\forall $ quantifier passes to the left of 2 or more arrows, when the type is drawn as a tree." (pg. 359 of \cite{tapl}) Juggling the power and practicality of Rank-N restrictions is something I'd like to explore in the future. It is interesting how languages handle this, such as Haskell.

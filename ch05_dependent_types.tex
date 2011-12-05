@@ -8,11 +8,10 @@ So far we have seen terms that depend on terms (lambda abstractions), terms that
 \section{Type Operators}
 Suppose you want to create a new type from existing types. The lambda systems we've explored so far don't support this expressive of type level operations. System F lets us use simple type applications and abstractions to model polymorphism, but it doesn't allow for the creation of new types.
 
-For instance, let's construct Haskell's Either type:
-%<pre>
-%<u><font color="Green">data</font></u> Either a b <font color="Blue">=</font> Left a <font color="Blue">|</font> Right b
-%</pre>
-This is an Algebraic Data Type (ADT). On the left is the type, where any two types can be substituted for $a$ and $b$. On the right are the two terms that inhabit that type. Formally, the type looks something like $Either\ Y\ Z = \forall X. (Y \rightarrow Z \rightarrow X) \rightarrow X $ or $\lambda Y. \lambda Z. \forall X. (Y \rightarrow Z \rightarrow X) \rightarrow X $, where $Y$ and $Z$ are type parameters and $X$ is the new type produced (as adapted from Chapter. 29 of \cite{tapl}). $Either$ is a type that depends on other types. If we add some simple type application and abstraction rules we are good to go, right? 
+\begin{SaveVerbatim}{either}
+data Either a b = Left a | Right b
+\end{SaveVerbatim}
+For instance, let's construct Haskell's Either type:\\ \BUseVerbatim{either}. This is an Algebraic Data Type (ADT). On the left is the type, where any two types can be substituted for $a$ and $b$. On the right are the two terms that inhabit that type. Formally, the type looks something like $Either\ Y\ Z = \forall X. (Y \rightarrow X) \rightarrow (Z \rightarrow X) \rightarrow X $ or $\lambda Y. \lambda Z. \forall X. (Y \rightarrow X) \rightarrow (Z \rightarrow X) \rightarrow X $, where $Y$ and $Z$ are type parameters and $X$ is the new type produced (as adapted from Chapter. 29 of \cite{tapl}). $Either$ is a type that depends on other types. If we add some simple type application and abstraction rules we are good to go, right? 
 
 Not really. We now have two types of types, proper types with arity of 0, as well as partially applied types, or type families, with arity greater than 0. Using type families in type signatures doesn't make sense, so we need to ensure that our type signatures are themselves well typed. So enters the notion of kinds.
 
@@ -21,94 +20,98 @@ What is the type of a type? Let us denote it as a kind ($\ast $). The kind of a 
 
 Going deeper, what is the type of a kind? Well according to \cite{lambdaPi}:
 
-%<blockquote>
+\begin{quote}
 "As the kind of ∗ is itself ∗, we can encode a variation of Russell’s paradox, known as Girard’s paradox. This allows us to create an inhabitant of any type. To fix this, the standard solution is to introduce an infinite hierarchy of types: the type of ∗ is ∗1 , the type of ∗1 is ∗2 , and so forth."
-%</blockquote>
+\end{quote}
 
 So basically it is turtles all the way down...
 
 \section{Generalized Algebraic Data Types (GADT)}
-ADTs are great, but we might ask, can we squeeze more expressiveness out them? The answer is yes, and it comes in the form of GADTs.
+ADTs are great, but we might ask, can we squeeze more expressiveness out them? The answer is yes, and it comes in the form of GADTs.  The key distinction between ADTs and GADTs is that pattern matching causes type refinement. Take this contrived example of an ADT:
+\begin{verbatim}
+data Term' a = Lit1 Int
+             | Lit2 a
+             | Succ' Int
 
-The key distinction between ADTs and GADTs is that pattern matching causes type refinement. Take this contrived example of an ADT:
+\end{verbatim}
 
-%<pre><u><font color="Green">data</font></u> Term' a <font color="Blue">=</font> Lit1 Int
-             %<font color="Blue">|</font> Lit2 a
-             %<font color="Blue">|</font> Succ' Int
-%</pre>
 and look at the type of the following:
-%<pre>
-%<font color="Blue">&gt;</font> <b><font color="Blue">:</font></b>t Lit1 <font color="Red">1</font>
-%Lit1 <font color="Red">1</font> <font color="Blue">::</font> Term' a
+\begin{verbatim}
+> :t Lit1 1
+Lit1 1 :: Term' a
 
-%<font color="Blue">&gt;</font> <b><font color="Blue">:</font></b>t Lit2 <font color="Red">'a'</font>
-%Lit2 <font color="Red">'a'</font> <font color="Blue">::</font> Term' Char
-%</pre>
+> :t Lit2 'a'
+Lit2 'a' :: Term' Char
+\end{verbatim}
 
-Constructing a $Lit1$ term doesn't lead to a type refinement of $a$ to $Int$ in $Term' a$. $Lit2$ does refine $a$ to $Char$ but this type refinement is too restrictive. Let's make a similar GADT, $Term a$, taken from \cite{haskellGADT}, which uses it to define a well-typed eval function:
+Constructing a $Lit1$ term doesn't lead to a type refinement of $a$ to $Int$ in $Term'\ a$. $Lit2$ does refine $a$ to $Char$ but this type refinement is too restrictive. Let's make a similar GADT, $Term a$, taken from \cite{haskellGADT}, which uses it to define a well-typed eval function:
 
-%<pre>
-%<u><font color="Green">data</font></u> Term a <u><font color="Green">where</font></u>
-  %Lit    <font color="Blue">::</font> Int <font color="Blue">-&gt;</font> Term Int
-  %Succ   <font color="Blue">::</font> Term Int <font color="Blue">-&gt;</font> Term Int
-  %IsZero <font color="Blue">::</font> Term Int <font color="Blue">-&gt;</font> Term Bool
-  %If     <font color="Blue">::</font> Term Bool <font color="Blue">-&gt;</font> Term a <font color="Blue">-&gt;</font> Term a <font color="Blue">-&gt;</font> Term a
-  %Pair   <font color="Blue">::</font> Term a <font color="Blue">-&gt;</font> Term b <font color="Blue">-&gt;</font> Term <font color="Blue">(</font>a<font color="Blue">,</font>b<font color="Blue">)</font>
-%</pre>
+\begin{verbatim}
+data Term a where
+  Lit    :: Int -> Term Int
+  Succ   :: Term Int -> Term Int
+  IsZero :: Term Int -> Term Bool
+  If     :: Term Bool -> Term a -> Term a -> Term a
+  Pair   :: Term a -> Term b -> Term (a,b)
+\end{verbatim}
 
 $a$ is refined to $Int$ in the following GADT term:
-%<pre>
-%<font color="Blue">&gt;</font> <b><font color="Blue">:</font></b>t Lit <font color="Red">1</font>
-%Lit <font color="Red">1</font> <font color="Blue">::</font> Term Int
-%</pre>
+\begin{verbatim}
+> :t Lit 1
+Lit 1 :: Term Int
+\end{verbatim}
 
 And we gain some expressiveness by allowing $a$ to be refined to $Bool$ in $IsZero$:
-%<pre><font color="Blue">&gt;</font> <b><font color="Blue">:</font></b>t IsZero <font color="Blue">$</font> Lit <font color="Red">1</font>
-%IsZero <font color="Blue">$</font> Lit <font color="Red">1</font> <font color="Blue">::</font> Term Bool
-%</pre>
-
+\begin{verbatim}
+> :t IsZero $ Lit 1
+IsZero $ Lit 1 :: Term Bool
+\end{verbatim}
 
 \section{Faking dependent types with GADT}
 In some instances we can use GADTs to fake dependent typing. Since GADTs separate values from types, that is, terms aren't allowed in type operations, we have to use singleton types that represent values \cite{gadts}. This is the approach taken by Sheard et. al. in the design of Ωmega \cite{gadts}.
 
 Take, for instance, this series of ADTs:
-$data\ Vec0\ \alpha = Vec0 $
-$data\ Vec1\ \alpha = Vec1\ \alpha $
-$data\ Vec2\ \alpha = Vec2\ \alpha\ \alpha $
-$data\ Vec3\ \alpha = Vec3\ \alpha\ \alpha\ \alpha $
+\begin{equation*}
+  \begin{aligned}
+  & data\ Vec0\ \alpha = Vec0 \\
+  & data\ Vec1\ \alpha = Vec1\ \alpha \\
+  & data\ Vec2\ \alpha = Vec2\ \alpha\ \alpha \\
+  & data\ Vec3\ \alpha = Vec3\ \alpha\ \alpha\ \alpha
+  \end{aligned}
+\end{equation*}
 
 These ADTs are trying to capture length information of the vector. There is a pattern here, and it would be nice to create an abstraction for it, such as: $\forall \alpha :: \ast.\forall n :: Nat.Vec\ n\ \alpha $, where $n$ represents the length, and $\alpha $ the data.\cite{lambdaPi}
 
 Using GADTs we can create types to represent the natural numbers and successfully achieve the abstraction above. The following is an example modified from \cite{vectors}:
 
-%<pre>
-%<font color="Green">-- Making use of phantom types</font>
-%<u><font color="Green">data</font></u> Zero
-%<u><font color="Green">data</font></u> Succ n
+\begin{verbatim}
+-- Phantom Types
+data Zero
+data Succ n
 
-%<font color="Green">-- Some type aliases for convience</font>
-%<u><font color="Green">type</font></u> One   <font color="Blue">=</font> Succ Zero
-%<u><font color="Green">type</font></u> Two   <font color="Blue">=</font> Succ One
-%<u><font color="Green">type</font></u> Three <font color="Blue">=</font> Succ Two
-%<u><font color="Green">type</font></u> Four  <font color="Blue">=</font> Succ Three
+type One   = Succ Zero
+type Two   = Succ One
+type Three = Succ Two
+type Four  = Succ Three
 
-%<u><font color="Green">data</font></u> Vec n a <u><font color="Green">where</font></u>
-  %Nil  <font color="Blue">::</font> <font color="Blue">(</font>Show a<font color="Blue">)</font> <font color="Blue">=&gt;</font>                 Vec Zero a
-  %Cons <font color="Blue">::</font> <font color="Blue">(</font>Show a<font color="Blue">)</font> <font color="Blue">=&gt;</font> a <font color="Blue">-&gt;</font> Vec n a <font color="Blue">-&gt;</font> Vec <font color="Blue">(</font>Succ n<font color="Blue">)</font> a
+data Vec n a where
+  Nil  :: (Show a) =>                 Vec Zero a
+  Cons :: (Show a) => a -> Vec n a -> Vec (Succ n) a
 
-%<u><font color="Green">instance</font></u> Show <font color="Blue">(</font>Vec n a<font color="Blue">)</font> <u><font color="Green">where</font></u> show <font color="Blue">=</font> showVec
+instance Show (Vec n a) where show = showVec
 
-%showVec <font color="Blue">::</font> Vec n a <font color="Blue">-&gt;</font> String
-%showVec Nil <font color="Blue">=</font> <font color="Red">""</font>
-%showVec <font color="Blue">(</font>Cons x xs<font color="Blue">)</font> <font color="Blue">=</font> show x <font color="Blue">++</font> <font color="Red">" "</font> <font color="Blue">++</font> showVec xs
+showVec :: Vec n a -> String
+showVec Nil = ""
+showVec (Cons x xs) = show x ++ " " ++ showVec xs
 
-%foo <font color="Blue">=</font> Cons <font color="Red">3</font> <font color="Blue">(</font>Cons <font color="Red">2</font> <font color="Blue">(</font>Cons <font color="Red">1</font> Nil<font color="Blue">)</font><font color="Blue">)</font>
+foo = Cons 3 (Cons 2 (Cons 1 Nil))
 
-%<font color="Blue">&gt;</font> show foo
-%<font color="Red">"3 2 1"</font>
-%</pre>
+> show foo
+"3 2 1"
+\end{verbatim}
 
-This is pretty cool, and I've enjoyed playing around with Ωmega, which fully internalizes this approach. Regardless, things can get cumbersome when you have to create parallels between the type and term worlds.
+
+This is pretty cool, and I've enjoyed playing around with $\Omega$mega, which fully internalizes this approach. Regardless, things can get cumbersome when you have to create parallels between the type and term worlds.
 
 \section{Pi Types}
 In literature, the $\Pi $ type represents the dependent product type, and is a generalization of $\lambda $ in simply typed lambda calculus. It abstracts arrows, accepting type-level arguments, as well as term-level arguments. Hence $S \rightarrow T  $ is the same as $\Pi x : S\ .\ T $, where $x$ does not appear free in $T$.
@@ -121,7 +124,7 @@ Dependent typing lets us move a lot of computation to the type checking phase, g
 
 The main problem is that now there are terms in our types, so to check type equality we need to evaluate our types to a normal form. If we aren't careful and encode too powerful of a language into our types the result is a non-terminating type checker. Modern dependently type languages remedy this problem differently:
 %<blockquote>
-"Ωmega type-level programs are written as term rewriting systems, that have to terminate; Epigram and Coq programs are written in total languages - every program terminates; in Agda, programs are interrupted when they get stuck in a loop - soundness is regained through a separate termination check (I think). In practice, non-termination doesn't seem to be a big problem." \cite{eval} 
+"$\Omega$mega type-level programs are written as term rewriting systems, that have to terminate; Epigram and Coq programs are written in total languages - every program terminates; in Agda, programs are interrupted when they get stuck in a loop - soundness is regained through a separate termination check (I think). In practice, non-termination doesn't seem to be a big problem." \cite{eval} 
 %</blockquote>
 
 Where total languages are those that provably terminate, and hence are not Turing-Complete, while partial languages are Turing-Complete.
@@ -130,11 +133,12 @@ So language designers must tread lightly. Total languages are restrictive and re
 
 \section{Are Dependent Types the Way to the Future?}
 There is a lot of stigma against dependently typed languages:
-%<blockquote>
+
+\begin{quote}
 "Most Haskell programmers are hesitant to program with dependent types. It is said that type checking becomes undecidable; the phase distinction between type checking and evaluation is lost; the type checker will always loop; and that dependent types are really, really hard.
 
 The same Haskell programmers, however, are perfectly happy to program with a ghastly hodgepodge of generalized algebraic data types, multi-parameter type classes with functional dependencies, impredicative higher-ranked types, and even data kinds. They will go to great lengths to avoid dependent types." \cite{lambdaPi} 
-%</blockquote>
+\end{quote}
 
 At the same time, a lot of smart people are pushing dependent types. For instance, \cite{langVeri} sees a dependently typed, pay-as-you-go approach to language verification as the next logical step in the progression of languages.
 
