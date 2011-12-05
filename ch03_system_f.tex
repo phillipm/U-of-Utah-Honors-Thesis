@@ -1,7 +1,7 @@
 \chapter{SYSTEM F} \label{ch:systemf}
 System F is a second-order typed lambda calculus that allows universal quantification over types. The Curry-Howard Isomorphism extends to System F, providing a direct correspondence to second order intuitionistic logic. It was discovered independently by the logician Jean-Yves Girard and computer scientist John C. Reynolds.
 
-Girard developed System F as a proof notation for second-order logic, while Reynolds invented System F when trying to build a type system for a polymorphic programming language.[2]
+Girard developed System F as a proof notation for second-order logic, while Reynolds invented System F when trying to build a type system for a polymorphic programming language. \cite{CHnotes}
 \section{Quick Intuition on System F}
 The practical idea of System F is to add polymorphism to typed lambda calculus. For instance if we want to define the untyped function $composition = \lambda f. \lambda g. \lambda x. f\ (g\ x) $ in $\lambda_{\rightarrow} $ (simply typed lambda calculus), we would need to define an infinite number of functions in order to satisfy all possible types:
 
@@ -15,23 +15,23 @@ $composition = \lambda X.\ \lambda f:X \rightarrow X.\ \lambda g:X \rightarrow X
 The idea is that the type is abstracted out of the term, allowing for type variables to later be applied to it:
 $composition [Int] \rightarrow [X \mapsto Int] composition $
 
-More formally, type abstractions and applications are added to the syntax and reduction rules of $\lambda_{\rightarrow} $, full details of which are found on page 343 of [3].
+More formally, type abstractions and applications are added to the syntax and reduction rules of $\lambda_{\rightarrow} $, full details of which are found on page 343 of \cite{tapl}.
 
 Adding universal quantification over types means that we're now working with second order logic, which I haven't yet discussed. So I think it is time for...
 \section{Fun with Quantifiers}
-First-order logic uses only variables that range over individuals (elements of the domain of discourse)[1]:
+First-order logic uses only variables that range over individuals (elements of the domain of discourse)\cite{secondOrderWiki}
 
 For example:
 $\forall x \in S\ (x+1 > 12)\ where\ S = \{1,2, \ldots, 10\} $
 
-In second-order logic variables can also range over sets of individuals. As in it allows for quantification over not only individuals (terms in System F), but also over predicates (types in System F) [pg. 341 of 3]
+In second-order logic variables can also range over sets of individuals. As in it allows for quantification over not only individuals (terms in System F), but also over predicates (types in System F) (pg. 341 of \cite{tapl})
 
 For example:
 $\forall x \in Odds(S)\ \exists y \in Evens(S)\ (x+y = 11)\ where\ S = \{1,2, \ldots, 10\} $
 
 We need to remember that we are still playing with intuitionistic logic, so it is worth exploring what quantifiers really mean in this context.
 
-Page 192 of "Lectures on the Curry-Howard Isomorphsim" [2] explains it well enough:
+Page 192 of \cite{CHnotes} explains it well enough:
 %<blockquote>
 "The intended meaning of "$\forall p \varphi(p) $" is that $\varphi(p) $ holds for all possible meanings of $p $. The meaning of "$\exists p \varphi(p) $" is that $\varphi(p) $ holds for some meaning of $p $. Classically, there are just two possible such meanings: the two truth values. Thus, the statement $\forall p \varphi(p) $ is classically equivalent to $\varphi(\top) \wedge \varphi(\bot)$, and $\exists p \varphi(p) $ is equivalent to $\varphi(\top) \vee \varphi(\bot)$.
 ...
@@ -47,20 +47,15 @@ Syntactically, predicates P must be themselves represented by formulas.
 
 This explanation still leaves me feeling a bit confused as to the nature of $\forall $ and $\exists $ in intuitionistic logic. Perhaps I'll have to revisit this.
 \section{Some notes on the Girard-Reynolds Isomorphism}
-According to Wadler in [4], in addition to System F, Girard proved a Representation Theorem: every function on natural numbers that can be proved total in second-order predicate calculus can be represented in System F. While Reynolds proved an Abstraction Theorem: every term in System F satisfies a suitable notion of logical relation.
+According to Wadler in \cite{Wadlergirard}, in addition to System F, Girard proved a Representation Theorem: every function on natural numbers that can be proved total in second-order predicate calculus can be represented in System F. While Reynolds proved an Abstraction Theorem: every term in System F satisfies a suitable notion of logical relation.
 
 Girard's Representation Theorem results in a projection from second order logic into System F, while Reynolds' Abstraction Theorem results in an embedding of System F into second order logic.
 
-Quoting Wadler loosely from [4]:
+Quoting Wadler loosely from \cite{Wadlergirard}:
 Second order logic is larger than System F's image under the Curry-Howard isomorphism. Second order logic contains quantifiers over individuals, types, and predicates, while System F only allows for quantification over types. Girard's projection from second order logic onto System F is similar to the Curry-Howard isomorphism, in that it takes propositions to types and proofs to terms, but differs in that it erases information about individuals. This mapping preserves reductions, hence it is no mere surjection but a true epimorphism.
 
 Thus the Reynolds embedding followed by the Girard projection is the identity. While Girard's projection followed by Reynolds' embedding is not since the projection discards all information about individuals.
 \section{Questions + Other notes:}
-Literature states that type checking in System F is undecidable [pg. 204 of 2]. Yet System F is strongly normalizing [pg. 353 of 3]. This doesn't make sense to me...
+Literature states that type checking in System F is undecidable (pg. 204 of \cite{CHnotes}). Yet System F is strongly normalizing (pg. 353 of \cite{tapl}). This doesn't make sense to me...
 
-Rank-2 polymorphism: Since type reconstruction of System F is undecidable, restrictions are applied to enable practical use in languages. One such restriction is $Rank-2 Polymorphism$. "A type is said to be of rank 2 if no path from its root to a $\forall $ quantifier passes to the left of 2 or more arrows, when the type is drawn as a tree." [pg. 359 of 3] Juggling the power and practicality of Rank-N restrictions is something I'd like to explore in the future. It is interesting how languages handle this, such as Haskell.
-
-%[1]: <a href="http://en.wikipedia.org/wiki/Second-order_logic">Wikipedia: Second-order Logic</a>
-%[2]: <a href="http://folli.loria.fr/cds/1999/library/pdf/curry-howard.pdf">Lectures on the Curry-Howard Isomorphism</a> (free old version)
-%[3]: <a href="http://www.amazon.com/Types-Programming-Languages-Benjamin-Pierce/dp/0262162091">Types and Programming Languages</a>
-%[4]: <a href="http://www.sciencedirect.com/science/article/pii/S0304397506009236">Wadler's "The Girard-Reynolds Isomorphism"</a>
+Rank-2 polymorphism: Since type reconstruction of System F is undecidable, restrictions are applied to enable practical use in languages. One such restriction is $Rank-2 Polymorphism$. "A type is said to be of rank 2 if no path from its root to a $\forall $ quantifier passes to the left of 2 or more arrows, when the type is drawn as a tree." (pg. 359 of \cite{tapl}) Juggling the power and practicality of Rank-N restrictions is something I'd like to explore in the future. It is interesting how languages handle this, such as Haskell.

@@ -2,10 +2,10 @@
 With universal quantification ($\forall $) over types, System F allows us to reason about polymorphic functions. System F's polymorphism is called $parametric polymorphism$, as compared to the $ad-hoc polymorphism$ of method overloading in most imperative languages. The generality of this parametric polymorphism has much to offer.
 
 \section{Theorems for Free}
-In "Theorems for Free!" [2], Wadler refines some ideas on parametric polymorphism presented by Reynolds in [9]. The overarching idea is that parametrically polymorphic functions behave uniformly across all types. With this uniformity we can derive certain simple theorems from only the type signature.
+In "Theorems for Free!" \cite{theoremsForFree}, Wadler refines some ideas on parametric polymorphism presented by Reynolds in \cite{reynolds}. The overarching idea is that parametrically polymorphic functions behave uniformly across all types. With this uniformity we can derive certain simple theorems from only the type signature.
 
 Take this polymorphic function $f : \forall A . A \rightarrow A $
-If we exclude the ability to do runtime type analysis [3], there is no way to do operations that distinguish between types. Hence, the only possible function body that could inhabit $f $ is the identity function $f = \lambda A\ .\ \lambda x : A\ .\ x $
+If we exclude the ability to do runtime type analysis \cite{vytinFree}, there is no way to do operations that distinguish between types. Hence, the only possible function body that could inhabit $f $ is the identity function $f = \lambda A\ .\ \lambda x : A\ .\ x $
 
 Extending this idea to functions that operate over lists, a function such as $g : \forall A . [A] \rightarrow [A] $ can only operate over the elements provided to it.
 
@@ -34,16 +34,16 @@ Below is a continuation of this example in Haskell using the ExistentialQuantifi
 %</pre>
 
 \section{Pffft, tell me something useful}
-While trivial looking, these simple commuting theorems are actually useful. They enable us to add function commutativity to our arsenal of algebraic manipulations when we are reasoning about programs [2]. In addition, [1] states that the reordering of function applications can lead to improved efficiency of code by enabling additional transformations and analysis.
+While trivial looking, these simple commuting theorems are actually useful. They enable us to add function commutativity to our arsenal of algebraic manipulations when we are reasoning about programs \cite{theoremsForFree}. In addition, \cite{impreciseSemantics} states that the reordering of function applications can lead to improved efficiency of code by enabling additional transformations and analysis.
 
 That's cool, but still kind of boring and aides little when using real world languages. So what's up with parametricity these days and can it be useful in the context of modern functional languages?
 
 \section{Parametricity with Haskell}
-You may have noticed by now that languages like Haskell have runtime type analysis, as well as imprecise error semantics, both of which prevent us from deriving free theorems from polymorphic functions. 
+You may have noticed by now that languages like Haskell have runtime type analysis, as well as imprecise error semantics, both of which prevent us from deriving free theorems from polymorphic functions.
 
-By imprecise error semantics, we mean that the error raised by a program is not guaranteed to be the same exception that would be encountered by a straight forward sequential execution [6]. This means that when making use of free theorems in Haskell, there is no guarantee that new errors will won't be introduced. 
+By imprecise error semantics, we mean that the error raised by a program is not guaranteed to be the same exception that would be encountered by a straight forward sequential execution \cite{jonesSemantics}. This means that when making use of free theorems in Haskell, there is no guarantee that new errors will won't be introduced.
 
-Take the example provided in Stenger and Voigtländer's paper "Parametricity for Haskell with Imprecise Error Semantics" [1]:
+Take the example provided in Stenger and Voigtländer's paper "Parametricity for Haskell with Imprecise Error Semantics" \cite{impreciseSemantics}:
 %<pre><font color="Green">-- produces ***Exception: divide by zero</font>
 %l <font color="Blue">=</font> <font color="Blue">[</font><font color="Blue">[</font>i<font color="Blue">]</font> <font color="Blue">|</font> i <font color="Blue">&lt;-</font> <font color="Blue">[</font><font color="Red">1</font><font color="Blue">..</font><font color="Blue">(</font>div <font color="Red">1</font> <font color="Red">0</font><font color="Blue">)</font><font color="Blue">]</font><font color="Blue">]</font>
 
@@ -69,9 +69,9 @@ Take the example provided in Stenger and Voigtländer's paper "Parametricity for
 %<font color="Green">-- while this could only produce 1 error</font>
 %takeWhile null <font color="Blue">(</font>map tail l<font color="Blue">)</font></pre>
 
-This example shows that Haskell's non-deterministic error semantics might introduce new errors when free theorems are used. The one problem I have with this example is the authors claim that $map tail$ only propagates errors and doesn't actually introduce any new errors. This disagrees with me because $map tail [[1], [], [2]]$ will obviously raise an error. I'll have to take a deeper look at this. Regardless, [1] goes on to formulate notations for using free theorems in the presence of imprecise errors.
+This example shows that Haskell's non-deterministic error semantics might introduce new errors when free theorems are used. The one problem I have with this example is the authors claim that $map tail$ only propagates errors and doesn't actually introduce any new errors. This disagrees with me because $map tail [[1], [], [2]]$ will obviously raise an error. I'll have to take a deeper look at this. Regardless, \cite{impreciseSemantics} goes on to formulate notations for using free theorems in the presence of imprecise errors.
 
-As for runtime type analysis, the essence of the problem is that polymorphic functions can treat inputs of different types non-uniformly. Hence there is no straight forward way to derive free theorems from polymorphic functions that analyze types, such as the function $f'$ derived from the example in [3]:
+As for runtime type analysis, the essence of the problem is that polymorphic functions can treat inputs of different types non-uniformly. Hence there is no straight forward way to derive free theorems from polymorphic functions that analyze types, such as the function $f'$ derived from the example in \cite{vytinFree}:
 
 %<pre>
 %<font color="Green">-- Without runtime type analysis functions of type a -&gt; a</font>
@@ -97,7 +97,7 @@ As for runtime type analysis, the essence of the problem is that polymorphic fun
 %f' <font color="Blue">.</font> g <font color="Blue">/=</font> g <font color="Blue">.</font> f'
 %</pre>
 
-[3] remedies this problem by using representation types. Languages such as $\lambda_R $ use term representation of types to simulate runtime type analysis [7]. The idea is to have terms represent types, so if term $e$ represents type $t$, then term $e$ has type $R t$. The introduction of GADTs (generalized algebraic datatypes) has enabled representation types to be used with parametricity. This is best seen in the concrete with an example from [3] that uses Haskell's <a href="http://en.wikibooks.org/wiki/Haskell/GADT">GADT language extension</a>:
+\cite{vytinFree} remedies this problem by using representation types. Languages such as $\lambda_R $ use term representation of types to simulate runtime type analysis \cite{erasureSemantics}. The idea is to have terms represent types, so if term $e$ represents type $t$, then term $e$ has type $R t$. The introduction of GADTs (generalized algebraic datatypes) has enabled representation types to be used with parametricity. This is best seen in the concrete with an example from \cite{vytinFree} that uses Haskell's <a href="http://en.wikibooks.org/wiki/Haskell/GADT">GADT language extension</a>:
 %<pre><font color="Green">{-# LANGUAGE GADTs #-}</font>
 
 %<font color="Green">-- representation type of Int, Func, and Any</font>
@@ -122,27 +122,16 @@ As for runtime type analysis, the essence of the problem is that polymorphic fun
 %<font color="Blue">***</font>Couldn't match expected <u><font color="Green">type</font></u> <font color="Blue">`</font>Int' with actual <u><font color="Green">type</font></u> <font color="Blue">`</font>Char'
 %</pre>
 
-In the example above, the general free theorem $(g[\tau]\ r) \circ h \cong h \circ (g[\tau]\ r) $ doesn't hold because of $R_{int} $. But of course if we are analyzing $R_{any} $ it holds: $(g[\tau]\ (R_{any}[\tau])) \circ h \cong h \circ (g[\tau]\ (R_{any}[\tau])) $  [3]
+In the example above, the general free theorem $(g[\tau]\ r) \circ h \cong h \circ (g[\tau]\ r) $ doesn't hold because of $R_{int} $. But of course if we are analyzing $R_{any} $ it holds: $(g[\tau]\ (R_{any}[\tau])) \circ h \cong h \circ (g[\tau]\ (R_{any}[\tau])) $ \cite{vytinFree}
 
-The work in [3] starts to lay the theoretical foundations needed to start reasoning about complex languages such as Haskell in terms of parametricity.
+The work in \cite{vytinFree} starts to lay the theoretical foundations needed to start reasoning about complex languages such as Haskell in terms of parametricity.
 
 \section{Parametricity and Program Synthesis}
-This brings me to how parametricity might help with program synthesis. The simple parametrically polymorphic functions presented in [2] seem much more tractable to synthesize when compared to functions with arbitrary type signatures. This is because the polymorphism guarantees that parameters will be treated uniformly and values external to the input exhibit little influence over the output. This greatly reduces the problem space.
+This brings me to how parametricity might help with program synthesis. The simple parametrically polymorphic functions presented in \cite{theoremsForFree} seem much more tractable to synthesize when compared to functions with arbitrary type signatures. This is because the polymorphism guarantees that parameters will be treated uniformly and values external to the input exhibit little influence over the output. This greatly reduces the problem space.
 
-But is synthesizing parametrically polymorphic functions actually useful? In most cases these functions are extremely simple and trivial, such as $tail$, $reverse$, $id$, etc. Future work (on GADTs), as discussed in [3], might lead to more nuanced and powerful reasoning of parametric polymorphism.
+But is synthesizing parametrically polymorphic functions actually useful? In most cases these functions are extremely simple and trivial, such as $tail$, $reverse$, $id$, etc. Future work (on GADTs), as discussed in \cite{vytinFree}, might lead to more nuanced and powerful reasoning of parametric polymorphism.
 
 \section{Conclusion}
 This post is spread quite thin; I've given an introduction to parametricity and free theorems, and shown how current research is working to make parametricity applicable to modern languages such as Haskell. Lastly I've punted on how parametricity might be useful to program synthesis.
 
-Hopefully this has sparked your interest in parametricity. In addition to the papers I presented here, there is some really interesting research going on in this area. "Generalizing Parametricity Using Information-flow" [4] looks to provide security and confidentiality to module writers utilizing parametric polymorphism in the face of runtime type analysis. "A Logic for Parametric Polymorphism" [8] introduces a logic that formalizes parametric polymorphism and follows in the steps of LCF, taking the first steps towards creating a full fledged logic for polymorphic programs.
-
-It is time to move on, next up I will cover GADTs and Dependent Types.
-
-%[1] <a href="www.iai.uni-bonn.de/~jv/TUD-FI08-08.pdf">Parametricity for Haskell with Imprecise Error Semantics</a>
-%[2] <a href="http://homepages.inf.ed.ac.uk/wadler/papers/free/free.ps">Theorems for Free!</a>
-%[3] <a href="www.seas.upenn.edu/~sweirich/papers/rtheorems07.pdf">Free Theorems and Runtime Type Representations</a>
-%[4] <a href="http://repository.upenn.edu/cis_papers/220/">Generalizing Parametricity Using Information-flow</a>
-%[6] <a href="http://research.microsoft.com/en-us/um/people/simonpj/papers/imprecise-exn.htm">A Semantics for Imprecise Exceptions</a>
-%[7] <a href="www.cs.cornell.edu/talc/papers/typepass.pdf">Intensional Polymorphism in Type Erasure Semantics</a> 
-%[8] <a href="http://www.era.lib.ed.ac.uk/bitstream/1842/205/1/Par_Poly.pdf">A Logic for Parametric Polymorphism</a>
-%[9] Types, Abstractions, and Parametric Polymorphism
+Hopefully this has sparked your interest in parametricity. In addition to the papers I presented here, there is some really interesting research going on in this area. "Generalizing Parametricity Using Information-flow" \cite{infoFlow} looks to provide security and confidentiality to module writers utilizing parametric polymorphism in the face of runtime type analysis. "A Logic for Parametric Polymorphism" \cite{paraLogic} introduces a logic that formalizes parametric polymorphism and follows in the steps of LCF, taking the first steps towards creating a full fledged logic for polymorphic programs.

@@ -9,9 +9,14 @@ More specifically a type declaration given in a programming language corresponds
 
 \emph{A Simple Example:}
 The Haskell type signature for the function const
-%<pre><font color="Blue">const</font> <font color="Red">::</font> a <font color="Red">-&gt;</font> b <font color="Red">-&gt;</font> a</pre>
+\begin{verbatim}
+const :: a -> b -> a
+\end{verbatim}
 
-is equivalent to the logical proposition $\frac{\Gamma, \alpha \vdash \beta}{\Gamma \vdash \alpha \rightarrow \beta \rightarrow \alpha}$
+is equivalent to the logical proposition
+\begin{equation*}
+\frac{\Gamma, \alpha \vdash \beta}{\Gamma \vdash \alpha \rightarrow \beta \rightarrow \alpha}
+\end{equation*}
 
 And since we are using a restricted form of logic known as intuitionistic or constructivist logic, providing a well-typed implementation to the function's type signature is the same as giving a logical proof.
 %<pre><font color="Blue">const</font> a b <font color="Red">=</font> a</pre>
@@ -23,6 +28,6 @@ C-H sounds kind of interesting, but one might ask how it is useful?
 
 C-H isn't really useful for the average programmer. Regardless, researchers are coming up with crazy new programming languages that make use of C-H. Cayenne and Omega for example use dependent types, which correspond to higher-order logic.
 
-Additionally, C-H has let mathematicians and computer scientists benefit from each other's discoveries. Computer scientists have traditionally researched reductions in lambda-calculus, while mathematicians have worked on normalization in proof theory. Thus, a discovery in one domain directly translates into the other domain. (pg. 67 of [1])
+Additionally, C-H has let mathematicians and computer scientists benefit from each other's discoveries. Computer scientists have traditionally researched reductions in lambda-calculus, while mathematicians have worked on normalization in proof theory. Thus, a discovery in one domain directly translates into the other domain. (pg. 67 of \cite{CHnotes})
 
 My interest in C-H started when I wanted to create a system to generate functions given a type signature and example input-output pairs. The problem is too under-determined to be plausible, but using more advanced type systems and leveraging C-H might mitigate that.
