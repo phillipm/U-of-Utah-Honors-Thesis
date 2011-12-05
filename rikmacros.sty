@@ -3,7 +3,7 @@
 % Revised: Wed Dec 17 18:20:55 1997 by faith@acm.org
 % Copyright 1996, 1997 Rickard E. Faith (faith@acm.org)
 % This program comes with ABSOLUTELY NO WARRANTY.
-% 
+%
 % $Id: rikmacros.sty,v 1.1 1999/11/19 23:21:30 culver Exp $
 %
 
@@ -34,7 +34,7 @@
 %  \@settopoint\evensidemargin
 %  \addtolength\topmargin{-.25in}
 %  \addtolength\textheight{.5in}
-  
+
 \def\McHugh{\hbox{M\raise.5ex\hbox{c}Hugh}}
 
 %\newcommand{\V}{\mathbb{V}}
@@ -49,7 +49,7 @@
 % Why?  Because \cite[pp.~123]{foo} => [foo. 123] instead of [foo, pp.~123]
 % But if there's just one p or if anything preceeds p, it's fine.
 \def\@citex@[#1]{\@ifnextchar [%
-  {\ifthenelse{\equal{#1}{}}{\@citex[#1]}{\@citex[\hbox{}#1]}} 
+  {\ifthenelse{\equal{#1}{}}{\@citex[#1]}{\@citex[\hbox{}#1]}}
   {\ifthenelse{\equal{#1}{}}{\@citex[][#1]}{\@citex[][\hbox{}#1]}}}
 
 
@@ -96,7 +96,7 @@
      \addpenalty{\@secpenalty}\addvspace{\@tempskipa}\fi \@ifstar
      {\@ssect{#3}{#4}{#5}{#6}}%
      {\@dblarg{\@sectnotoc{#1}{#2}{#3}{#4}{#5}{#6}}}}
-                             
+
 \def\@sectnotoc#1#2#3#4#5#6[#7]#8{%
      \ifnum #2>\c@secnumdepth
        \let\@svsec\@empty\else
@@ -346,7 +346,7 @@
 }
 
 %\newenvironment{algorithm}[2]%
-%{\setbox123=\hbox{\textbf{#1}}\allowbreak\begingroup\samepage\vskip 
+%{\setbox123=\hbox{\textbf{#1}}\allowbreak\begingroup\samepage\vskip
 %  1ex\trivlist\item\samepage\textbf{#1\boldmath#2}}%
 %{\textbf{End of \box123}\vskip 1ex\endtrivlist\endgroup}
 

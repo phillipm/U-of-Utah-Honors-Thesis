@@ -72,7 +72,8 @@
 
 
 \DeclareOption{nodraft}{\gator@nodraft}
-\DeclareOption{bottom}{\gator@bottom}
+\DeclareOption{bottom}{\pagenumberbottom}
+\DeclareOption{top}{\pagenumbertop}
 \DeclareOption{draft}{\gator@draft} % timestamp each page
 
 
@@ -227,7 +228,6 @@
 \gdef\gator@number{xxyy-nn}
 
 
-
 \def\thesisauthor#1{\gdef\gator@author{#1}\gdef\gator@AUTHOR{\uppercase{#1}}}
 \gdef\gator@author{Author}
 \gdef\gator@AUTHOR{AUTHOR}
@@ -262,11 +262,16 @@
 
 
 % Macros
+\def\section{\@startsection {section}{1}{\z@}{-3.5ex plus -1ex minus 
+    -.2ex}{2.3ex plus .2ex}{\normalsize\bf}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus 
+   -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus
+-1ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+
 
 
 \def\thesismaketitle{
-
-
   \pagenumbering{roman}\setcounter{page}{1}\thispagestyle{empty}
   \begin{spacing}{1}\reset@font
     \begin{center}
@@ -450,7 +455,16 @@
   }
 
 
-\def\gator@bottom{%
+\def\pagenumbertop{%
+  \renewcommand{\ps@plain}{%
+    \renewcommand{\@oddhead}{\hfil\textrm{\thepage}}%
+    \renewcommand{\@evenhead}{\textrm{\thepage}\hfil}%
+    \renewcommand{\@oddfoot}{}%
+    \renewcommand{\@evenfoot}{}%
+    \let\@mkboth\@gobbletwo%
+    }%
+  }
+\def\pagenumberbottom{%
   \renewcommand{\ps@plain}{%
     \renewcommand{\@oddhead}{}%
     \renewcommand{\@evenhead}{}%
@@ -480,14 +494,18 @@
 
 
 \renewcommand{\abstractname}{ABSTRACT}
+\renewcommand*\contentsname{TABLE OF CONTENTS}
+\renewcommand\bibname{BIBLIOGRAPHY}
 
 
 \renewenvironment{abstract}{%
+  \pagenumberbottom
+  \addcontentsline{toc}{chapter}{ABSTRACT}
   \clearpage\thispagestyle{plain}
   \global\@topnum\z@
   \@afterindentfalse\reset@font
   \begin{spacing}{1}
-  \begin{center}\bfseries
+  \begin{center}
     \gator@adjustabstractspacing
     \vspace{0.5in}
     \abstractname
@@ -510,6 +528,7 @@
 
 \newcommand{\lastpagename}{}
 \newenvironment{lastpage}{\chapter*{\lastpagename}}{}
+   % page numbers on top
 
 
 \newcommand{\glossaryname}{Glossary}
@@ -518,6 +537,7 @@
 
 \def\gator@first{0}
 \renewcommand{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi
+  \pagenumbertop % page numbers on top
   \thispagestyle{plain}
   \global\@topnum\z@
   \@afterindentfalse
@@ -526,27 +546,28 @@
 
 % for \chapter
 \def\@makechapterhead#1{\cleardoublepage%
+  \pagenumbertop % page numbers on top
   \ifnum\gator@first=0%
      \def\gator@first{1}\pagenumbering{arabic}\setcounter{page}{1}\fi
-  \thispagestyle{empty}%
   {\parindent \z@ \raggedright \reset@font
-    %\begin{center}
-      \begin{spacing}{1}\vspace*{1in}\end{spacing}
-      \huge\bfseries\gator@adjustchapterspacing
+    \begin{center}
+      \begin{spacing}{1}\vspace*{.1in}\end{spacing}
+      \normalsize\gator@adjustchapterspacing
       \ifnum \c@secnumdepth >\m@ne
-        \@chapapp{} \thechapter
-        \par\nobreak
-        \vskip 20\p@
+        %\thechapter .
+        %\vskip 20\p@
       \fi
       \interlinepenalty\@M
       #1\par\nobreak
-    %\end{center}
-    \vskip 40\p@}}
+    \end{center}
+    %\vskip 40\p@
+    }}
 
 
 % \chapter*
 \def\@makeschapterhead#1{\cleardoublepage%
-  \ifthenelse{\equal{#1}{\contentsname}\or\equal{#1}{\colophonname}}%
+  \pagenumbertop % page numbers on top
+  \ifthenelse{\equal{#1}{\contentsname}\or\equal{#1}{\lastpagename}}%
     {\relax}
     {\addcontentsline{toc}{chapter}{#1}} % [XIX. TABLE OF CONTENTS]
   \ifthenelse{\equal{#1}{\bibname}}{\gator@adjustbibspacing}{\relax}%
