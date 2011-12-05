@@ -18,7 +18,7 @@ then
 $map\ g \circ f_{Char} \equiv f_{Int} \circ map\ g$
 
 Below is a continuation of this example in Haskell using the ExistentialQuantification extension. We let $f$ be the $reverse$ function, and $g$ be $ord$, which takes characters to their ascii values.
-\begin{verbatim}
+\begin{SaveVerbatim}{para}
 {-# LANGUAGE ExistentialQuantification #-}
 
 f :: forall a . [a] -> [a]
@@ -32,7 +32,12 @@ Main*> map g . f $ ['a'..'f']
 
 Main*> f . map g $ ['a'..'f']
   [102,101,100,99,98,97]
-\end{verbatim}
+\end{SaveVerbatim}
+\begin{figure}
+  \BUseVerbatim{para}
+  \caption{FOOBAR}
+  \label{fig:const}
+\end{figure}
 
 \section{Pffft, tell me something useful}
 While trivial looking, these simple commuting theorems are actually useful. They enable us to add function commutativity to our arsenal of algebraic manipulations when we are reasoning about programs \cite{theoremsForFree}. In addition, \cite{impreciseSemantics} states that the reordering of function applications can lead to improved efficiency of code by enabling additional transformations and analysis.
@@ -45,7 +50,7 @@ You may have noticed by now that languages like Haskell have runtime type analys
 By imprecise error semantics, we mean that the error raised by a program is not guaranteed to be the same exception that would be encountered by a straight forward sequential execution \cite{jonesSemantics}. This means that when making use of free theorems in Haskell, there is no guarantee that new errors will won't be introduced.
 
 Take the example provided in Stenger and Voigtländer's paper "Parametricity for Haskell with Imprecise Error Semantics" \cite{impreciseSemantics}:
-\begin{verbatim}
+\begin{SaveVerbatim}{imprecise}
 -- produces ***Exception: divide by zero
 l = [[i] | i <- [1..(div 1 0)]]
 
@@ -63,14 +68,21 @@ map tail
 (takeWhile (null . tail) l)
 
 -- by parametric free theorems:
-map tail (takeWhile (null . tail) l) == takeWhile null (map tail l)
+map tail (takeWhile (null . tail) l) == 
+takeWhile null (map tail l)
 
 -- but this could produce 2 different errors
 map tail (takeWhile (null . tail) l)
 
 -- while this could only produce 1 error
 takeWhile null (map tail l)
-\end{verbatim}
+\end{SaveVerbatim}
+
+\begin{figure}
+  \BUseVerbatim{imprecise}
+  \caption{FOOBAR}
+  \label{fig:imprecise}
+\end{figure}
 
 \begin{SaveVerbatim}{maptail}
 map tail
@@ -83,7 +95,7 @@ This example shows that Haskell's non-deterministic error semantics might introd
 
 As for runtime type analysis, the essence of the problem is that polymorphic functions can treat inputs of different types non-uniformly. Hence there is no straight forward way to derive free theorems from polymorphic functions that analyze types, such as the function $f'$ derived from the example in \cite{vytinFree}:
 
-\begin{verbatim}
+\begin{SaveVerbatim}{noFree}
 -- Without runtime type analysis functions of type a -> a
 -- can only be inhabited by the identity
 f :: forall a . a -> a
@@ -105,12 +117,17 @@ f . g == g . f
 
 -- No free theorem for f' and g since:
 f' . g /= g . f'
-\end{verbatim}
+\end{SaveVerbatim}
+
+\begin{figure}
+  \BUseVerbatim{noFree}
+  \caption{FOOBAR}
+  \label{fig:noFree}
+\end{figure}
 
 \cite{vytinFree} remedies this problem by using representation types. Languages such as $\lambda_R $ use term representation of types to simulate runtime type analysis \cite{erasureSemantics}. The idea is to have terms represent types, so if term $e$ represents type $t$, then term $e$ has type $R\ t$. The introduction of GADTs (generalized algebraic datatypes) has enabled representation types to be used with parametricity. This is best seen in the concrete with an example from \cite{vytinFree} that uses Haskell's GADT language extension:
-\begin{verbatim}
-{-# LANGUAGE GADTs #-}
 
+\begin{SaveVerbatim}{rep}
 -- representation type of Int, Func, and Any
 data R a where
   Rint :: R Int
@@ -131,7 +148,13 @@ g t y = case t of
 
 > Rint 'a'
 ***Couldn't match expected type `Int' with actual type `Char'
-\end{verbatim}
+\end{SaveVerbatim}
+
+\begin{figure}
+  \BUseVerbatim{rep}
+  \caption{FOOBAR}
+  \label{fig:rep}
+\end{figure}
 
 In the example above, the general free theorem $(g[\tau]\ r) \circ h \cong h \circ (g[\tau]\ r) $ doesn't hold because of $R_{int} $. But of course if we are analyzing $R_{any} $ it holds: $(g[\tau]\ (R_{any}[\tau])) \circ h \cong h \circ (g[\tau]\ (R_{any}[\tau])) $ \cite{vytinFree}
 

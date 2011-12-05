@@ -28,44 +28,73 @@ So basically it is turtles all the way down...
 
 \section{Generalized Algebraic Data Types (GADT)}
 ADTs are great, but we might ask, can we squeeze more expressiveness out them? The answer is yes, and it comes in the form of GADTs.  The key distinction between ADTs and GADTs is that pattern matching causes type refinement. Take this contrived example of an ADT:
-\begin{verbatim}
+
+\begin{SaveVerbatim}{fakeTerm}
 data Term' a = Lit1 Int
              | Lit2 a
              | Succ' Int
 
-\end{verbatim}
+\end{SaveVerbatim}
 
-and look at the type of the following:
-\begin{verbatim}
+\begin{SaveVerbatim}{fakeTermType}
 > :t Lit1 1
 Lit1 1 :: Term' a
 
 > :t Lit2 'a'
 Lit2 'a' :: Term' Char
-\end{verbatim}
+\end{SaveVerbatim}
+
+\begin{figure}
+  \begin{subfigure}[b]{.5\linewidth}
+    \BUseVerbatim{fakeTerm}
+    %\vspace{.2in}
+    \caption{...}
+  \end{subfigure}
+  \begin{subfigure}[b]{.5\linewidth}
+    \BUseVerbatim{fakeTermType}
+    \caption{...}
+  \end{subfigure}
+  \caption{...C}
+  \label{fig:fakeTerm}
+\end{figure}
 
 Constructing a $Lit1$ term doesn't lead to a type refinement of $a$ to $Int$ in $Term'\ a$. $Lit2$ does refine $a$ to $Char$ but this type refinement is too restrictive. Let's make a similar GADT, $Term a$, taken from \cite{haskellGADT}, which uses it to define a well-typed eval function:
 
-\begin{verbatim}
+\begin{SaveVerbatim}{term}
 data Term a where
   Lit    :: Int -> Term Int
   Succ   :: Term Int -> Term Int
   IsZero :: Term Int -> Term Bool
   If     :: Term Bool -> Term a -> Term a -> Term a
   Pair   :: Term a -> Term b -> Term (a,b)
-\end{verbatim}
+\end{SaveVerbatim}
 
 $a$ is refined to $Int$ in the following GADT term:
-\begin{verbatim}
+\begin{SaveVerbatim}{termType}
 > :t Lit 1
 Lit 1 :: Term Int
-\end{verbatim}
 
-And we gain some expressiveness by allowing $a$ to be refined to $Bool$ in $IsZero$:
-\begin{verbatim}
 > :t IsZero $ Lit 1
 IsZero $ Lit 1 :: Term Bool
-\end{verbatim}
+\end{SaveVerbatim}
+
+And we gain some expressiveness by allowing $a$ to be refined to $Bool$ in $IsZero$:
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{.5\linewidth}
+    \BUseVerbatim{term}
+    %\vspace{.2in}
+    \caption{...}
+  \end{subfigure}
+  \\
+  \begin{subfigure}{.5\linewidth}
+    \BUseVerbatim{termType}
+    \caption{...}
+  \end{subfigure}
+  \caption{...C}
+  \label{fig:term}
+\end{figure}
 
 \section{Faking dependent types with GADT}
 In some instances we can use GADTs to fake dependent typing. Since GADTs separate values from types, that is, terms aren't allowed in type operations, we have to use singleton types that represent values \cite{gadts}. This is the approach taken by Sheard et. al. in the design of Ωmega \cite{gadts}.
@@ -84,7 +113,7 @@ These ADTs are trying to capture length information of the vector. There is a pa
 
 Using GADTs we can create types to represent the natural numbers and successfully achieve the abstraction above. The following is an example modified from \cite{vectors}:
 
-\begin{verbatim}
+\begin{SaveVerbatim}{gadt}
 -- Phantom Types
 data Zero
 data Succ n
@@ -108,7 +137,12 @@ foo = Cons 3 (Cons 2 (Cons 1 Nil))
 
 > show foo
 "3 2 1"
-\end{verbatim}
+\end{SaveVerbatim}
+\begin{figure}
+  \BUseVerbatim{gadt}
+  \caption{...}
+  \label{fig:gadt}
+\end{figure}
 
 
 This is pretty cool, and I've enjoyed playing around with $\Omega$mega, which fully internalizes this approach. Regardless, things can get cumbersome when you have to create parallels between the type and term worlds.
