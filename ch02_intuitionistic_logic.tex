@@ -1,24 +1,26 @@
-%
-% $Id: ch02_relatedwork
-%
 \chapter{INTUITIONISTIC LOGIC}\label{ch:logic}
-The Curry-Howard Isomorphism is a correspondence between typed lambda calculus and a stricter subset of classical logic called Constructive Logic, or also Intuitionistic Logic. So what makes Intuitionistic Logic so special?
+The Curry-Howard Isomorphism is a correspondence between typed lambda calculus and a stricter subset of classical logic called intuitionistic logic. What differentiates intuitionistic logic from other forms of logic?
 
-Simply stated, intuitionistic logic is such that proving a theorem is done by providing an example that satisfies that theorem. Below are some excerpts from Chapter 3. $\S 13$ of Kleene's "Introduction to Metamathematics" \cite{metamath}, which offers a good introduction to intuitionistic logic. Afterwards I will provide a more formal definition.
+Simply stated, intuitionistic logic designed is such that proving a theorem is done by constructing an example that satisfies that theorem from a set of givens. Intuitionistic logic originates from mathematicians concerned about unsound applications of classical logic. From Weyl 1946:
+\begin{quote}
+"According to his view and reading of history, classical logic was abstracted from the mathematics of finite sets and their subsets. ... Forgetful of this limited origin, one afterwards mistook that logic for something above and prior to all mathematics, and finally applied it, without justification, to the mathematics of infinite sets."
+\end{quote}
 
-Intuitionistic logic originates from mathematicians concerned about unsound applications of classical logic. From Weyl 1946, "According to his view and reading of history, classical logic was abstracted from the mathematics of finite sets and their subsets. ... Forgetful of this limited origin, one afterwards mistook that logic for something above and prior to all mathematics, and finally applied it, without justification, to the mathematics of infinite sets."
+Classical mathematical logic is composed of intuitionistic and non-intuitionistic parts, and in essence they differ on their view of the infinite:
+\begin{quote}
+The non-intuitionistic mathematics which culminated in the theories of Weierstrass, Dedekind, and Cantor, and the intuitionistic mathematics of Brouwer, differ essentially in their view of the infinite. In the former, the infinite is treated as \emph{actual} or \emph{completed} or \emph{extended} or \emph{existential}. ... in the latter, the infinite is treated only as \emph{potential} or \emph{becoming} or \emph{constructive}.
+$\S 13$ of \cite{metamath}
+\end{quote}
 
-Classical mathematical logic is composed of intuitionistic and non-intuitionistic parts. "The non-intuitionistic mathematics which culminated in the theories of Weierstrass, Dedekind, and Cantor, and the intuitionistic mathematics of Brouwer, differ essentially in their view of the infinite. In the former, the infinite is treated as $actual$ or $completed$ or $extended$ or $existential$. ... in the latter, the infinite is treated only as $potential$ or $becoming$ or $constructive$." $\S 13$ of \cite{metamath}
-
-"In classical mathematics there occur $non-constructive$ or $indirect$ existence proofs, which the intuitionists do not accept. For example, to prove $there exists an n such that P(n)$, the classical mathematics may deduce a contradiction from the assumption $for all n, not P(n)$. Under both the classical and the intuitionistic logic, by reductio ab absurdum this gives $not for all n, not P(n)$. The classical logic allows this result to be transformed into $there exists an n such that P(n)$, but not (in general) the intuitionistic. Such a classical existence proof leaves us no nearer than before the proof was given to having an example of a number $n$ such that $P(n)$." $\S 13$ of \cite{metamath}
-
+% TODO: remove some of these block quotes!
+\begin{quote}
+In classical mathematics there occur \emph{non-constructive} or \emph{indirect} existence proofs, which the intuitionists do not accept. For example, to prove \emph{there exists an n such that P(n)}, the classical mathematics may deduce a contradiction from the assumption \emph{for all $n$, not $P(n)$}. Under both the classical and the intuitionistic logic, by reductio ab absurdum this gives \emph{not for all $n$, not $P(n)$}. The classical logic allows this result to be transformed into \emph{there exists an n such that P(n)}, but not (in general) the intuitionistic. Such a classical existence proof leaves us no nearer than before the proof was given to having an example of a number $n$ such that $P(n)$. $\S 13$ of \cite{metamath}
+\end{quote}
 
 \section{Why does Brouwer's intuitionistic logic reject the law of excluded middle?}
-"Brouwer [1908] observed that LEM was abstracted from finite situations, then extended without justification to statements about infinite collections. For example, if x, y range over the natural numbers 0, 1, 2, … and B(x) abbreviates the property (there is a y > x such that both y and y+2 are prime numbers), then we have no general method for deciding whether B(x) is true or false for arbitrary x, so ∀x(B(x) ∨ ¬B(x)) cannot be asserted in the present state of our knowledge. And if A abbreviates the statement ∀xB(x), then (A ∨ ¬A) cannot be asserted because neither A nor (¬A) has yet been proved." \cite{stanfordLogic} (Also see pg. 47 of \cite{metamath}
+According to \cite{stanfordLogic} 
+\begin{quote}
+Brouwer [1908] observed that LEM was abstracted from finite situations, then extended without justification to statements about infinite collections. For example, if $x$, $y$ range over the natural numbers $0, 1, 2, \ldots$ and $B(x)$ abbreviates the property (there is a $y > x$ such that both $y$ and $y+2$ are prime numbers), then we have no general method for deciding whether $B(x)$ is true or false for arbitrary $x$, so $\forall x . (B(x) \vee \neg B(x))$ cannot be asserted in the present state of our knowledge. And if $A$ abbreviates the statement $\forall x . B(x)$, then $(A \vee \neg A)$ cannot be asserted because neither $A$ nor $\neg A$ has yet been proved.
+\end{quote}
 
-\section{Why does intuitionistic logic exclude the double negation axiom?}
-...
-
-\section{Formal definition of intuitionistic logic:}
-...
-
+%\section{Why does intuitionistic logic exclude the double negation axiom?}
