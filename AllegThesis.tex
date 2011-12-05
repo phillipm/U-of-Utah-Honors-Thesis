@@ -59,7 +59,7 @@
 \begin{document}
 
 \thesistitle{A SURVEY INTO THE CURRY-HOWARD ISOMORPHISM}
-\thesisauthor{Phillip Mates} 
+\thesisauthor{Phillip Mates}
 \thesisadvisor{Matthew Might}
 \thesischair{Al Davis}
 \thesisdean{Thomas G. Richmond}
@@ -88,39 +88,22 @@
 %\listofabbreviations
 %\include{glossary}
 
-% ch:overview
-\include{ch01_overview} % Introductory chapter
-% ch:relatedwork
-\include{ch02_relatedwork} % Background chapter
-% ch:thework
-\include{ch03_thework} % Description and philosophy of sampled medial representation
-%ch:implem
-\include{ch04_implementation} % Discussion of subdivision surfaces for m-rep boundaries
-                              % sec:subdivproximity
-                              % Section on proximity tests for subdivision boundaries
-                              % sec:subdivmedialinterp
-                              % Section on medial interpolation of subdivision solids
-%ch:conclusion
-\include{ch05_conclusion} % Chapter on DS-Surfaces:  Boundary Displacments and Texturing
-                              %   and on Multifigure Modeling of M-rep Subdivision Solids
+\include{ch01_introduction}
+\include{ch02_intuitionistic_logic}
+\include{ch03_system_f}
+\include{ch04_parametricity}
+\include{ch05_dependent_types}
+\include{ch06_conclusion}
 
 \appendix
 \include{appa}              % Appendix A---Limit Positions for Catmull-Clark Surfaces
-\include{appb}              % Appendix B---Inverting Limit Positions for Irregular Meshes
-
-%\nocite{ckm-acmap-99}
-%\nocite{Dierckx93}
-%\nocite{obs-stcav-92}
-%\nocite{bb4471}
 
 %\nocite{*} includes all BibTeX references in the bibliography
 % COMMENT THIS OUT FOR YOUR FINAL VERSION
 \nocite{*}
 
 \begin{spacing}{1}
-  \begin{center}
   \bibliographystyle{plain}
-  \end{center}
   \bibliography{Bibdir/myBibtexDB}
 \end{spacing}
 
