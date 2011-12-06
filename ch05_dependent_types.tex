@@ -1,6 +1,6 @@
 
 \chapter{DEPENDENT TYPES}\label{ch:dependenttypes}
-We've covered second order lambda calculus ($\lambda_2$) and its connection to second order logic. How expressive can type systems get? It turns out there are two other extensions to $\lambda_\rightarrow$ that we can make, $\omega $ and $P$. $\lambda_\omega$ formalizes type operators, enabling the creation of Algebraic Data Types. Exploring ADT's generalization, Generalized Algebraic Data Types, will then carry us into Dependent Types ($\lambda_P$ or $\lambda_\Pi$).
+We've covered second order lambda calculus and its connection to second order logic, but how much more expressive can we make type systems? It turns out there are two other extensions to $\lambda_\rightarrow$ that we can make, $\omega $ and $P$. $\lambda_\omega$ formalizes type operators, enabling the creation of Algebraic Data Types. Exploring ADT's generalization, Generalized Algebraic Data Types, will then carry us into Dependent Types ($\lambda_P$ or $\lambda_\Pi$).
 
 \section{Dependent Types in a Nutshell}
 So far we have seen terms that depend on terms (lambda abstractions), terms that depend on types (polymorphism and simple type abstractions), and soon we'll see types that depend on types (type operators). This leaves one additional possibility, types that depend on terms, or dependent types. Having types that depend on terms lets us move a lot of a program's computation into the type checker, yielding crazy possibilities: lists that carry their length in their type \cite{vectors}, an AVL tree implementation whose type guarantees certain balanced properties \cite{progOmega}, a sorting algorithms whose type proves well-ordered output \cite{whyDep}, and so on. But first let's explore the $\lambda_\omega $ system.
@@ -10,7 +10,7 @@ So far we have seen terms that depend on terms (lambda abstractions), terms that
 data Either a b = Left a | Right b
 \end{SaveVerbatim}
 Suppose you want to create a new type from existing types. The lambda systems we've explored so far don't support this expressive of type level operations. System F lets us use simple type applications and abstractions to model polymorphism, but it doesn't allow for the creation of new types.
-For instance, let's construct Haskell's Either type: \BUseVerbatim{either}. This is an Algebraic Data Type (ADT). On the left is the type, where any two types can be substituted for $a$ and $b$. On the right are the two terms that inhabit that type. Formally, the type looks like $Either\ Y\ Z = \forall X. (Y \rightarrow X) \rightarrow (Z \rightarrow X) \rightarrow X $ or $\lambda Y. \lambda Z. \forall X. (Y \rightarrow X) \rightarrow (Z \rightarrow X) \rightarrow X $, where $Y$ and $Z$ are type parameters and $X$ is the new type produced. $Either$ is a type that depends on other types. If we add some simple type application and abstraction rules we are good to go, right?
+For instance, let's try constructing Haskell's Either type using an ADT: \BUseVerbatim{either}. On the left is the type, where any two types can be substituted for $a$ and $b$. On the right are the two terms that inhabit that type. Formally, the type looks like $Either\ Y\ Z = \forall X. (Y \rightarrow X) \rightarrow (Z \rightarrow X) \rightarrow X $ or $\lambda Y. \lambda Z. \forall X. (Y \rightarrow X) \rightarrow (Z \rightarrow X) \rightarrow X $, where $Y$ and $Z$ are type parameters and $X$ is the new type produced. $Either$ is a type that depends on other types. If we add some simple type application and abstraction rules we are good to go, right?
 
 Not really. We now have two types of types, proper types with arity of 0, as well as partially applied types, or type families, with arity greater than 0. Using type families in type signatures doesn't make sense, so we need to ensure that our type signatures are themselves well typed. So enters the notion of kinds.
 
@@ -26,7 +26,7 @@ Going deeper, what is the type of a kind? According to \cite{lambdaPi}:
 So basically it is turtles all the way down...
 
 \section{Generalized Algebraic Data Types (GADT)}
-ADTs are great, but we might ask, can we squeeze more expressiveness out them? The answer is yes, and it comes in the form of GADTs.  The key distinction between ADTs and GADTs is that pattern matching causes type refinement. Take, for example, the ADT in Figure \ref{fig:fakeTerm} (a). The construction of a $Lit1$ term in Figure \ref{fig:fakeTerm}(b) doesn't lead to the type refinement of $a$ into $Int$ in $Term'\ a$. $Lit2$ does refine $a$ to $Char$ but this type refinement is too restrictive. Let's remedy this by using the GADT from \cite{haskellGADT}, $Term\ a$ (Figure \ref{fig:term} (a)), which can be used to define a well-typed eval function.  $a$ is refined to $Int$ in \ref{fig:term}(b), and some expressiveness is gained since $a$ is allowed to be refined to $Bool$ in $IsZero$.
+ADTs are great, but we might ask, can we squeeze more expressiveness out them? The answer is yes, and it comes in the form of GADTs.  The key distinction between ADTs and GADTs is that pattern matching causes type refinement. Take, for example, the ADT in Figure \ref{fig:fakeTerm} (a). The construction of a $Lit1$ term in Figure \ref{fig:fakeTerm}(b) doesn't lead to the type refinement of $a$ into $Int$ in the type $Term'\ a$. $Lit2$ does refine $a$ to $Char$ but this type refinement is too restrictive. Let's remedy this by using the GADT from \cite{haskellGADT}, $Term\ a$ (Figure \ref{fig:term} (a)), which can be used to define a well-typed eval function.  $a$ is refined to $Int$ in \ref{fig:term}(b), and some expressiveness is gained since $a$ is allowed to be refined to $Bool$ in $IsZero$.
 
 \begin{SaveVerbatim}{fakeTerm}
 data Term' a = Lit1 Int
@@ -91,7 +91,7 @@ IsZero $ Lit 1 :: Term Bool
 \end{figure}
 
 \section{Faking dependent types with GADT}
-In some instances we can use GADTs to fake dependent typing. Since GADTs separate values from types, that is, terms aren't allowed in type operations, we have to use singleton types that represent values \cite{gadts}. This is the approach taken by Sheard et. al. in the design of $\Omega$mega \cite{gadts}.
+In some instances we can use GADTs to fake dependent typing. Since GADTs separate values from types, that is, terms aren't allowed in type operations, we have to use singleton types that represent values. This is the approach taken by Sheard et. al. in the design of $\Omega$mega \cite{gadts}.
 
 Take, for instance, this series of ADTs:
 \begin{spacing}{1.3}
@@ -105,7 +105,7 @@ Take, for instance, this series of ADTs:
 \end{equation*}
 \end{spacing}
 
-These ADTs are trying to capture length information of the vector. There is a pattern here, and it would be nice to create an abstraction for it, such as: $\forall \alpha :: \ast.\forall n :: Nat.Vec\ n\ \alpha $, where $n$ represents the length, and $\alpha $ the data.\cite{lambdaPi} Using GADTs we can create types to represent the natural numbers and successfully achieve the abstraction above. See Figure \ref{fig:gadt} for an instance of this that has been modified from \cite{vectors}.
+These ADTs are trying to capture length information of the vector. There is a pattern here, and it would be nice to create an abstraction for it, such as: $\forall \alpha :: \ast.\forall n :: Nat.Vec\ n\ \alpha $, where $n$ represents the length, and $\alpha $ the data \cite{lambdaPi}. Using GADTs we can create types to represent the natural numbers and successfully achieve the abstraction above. See Figure \ref{fig:gadt} for an instance of this that has been modified from \cite{vectors}.
 
 \begin{SaveVerbatim}{gadt}
 -- Phantom Types
@@ -158,9 +158,9 @@ Language designers must tread lightly. Total languages are restrictive and requi
 There is a lot of stigma against dependently typed languages:
 
 \begin{quote}
-"Most Haskell programmers are hesitant to program with dependent types. It is said that type checking becomes undecidable; the phase distinction between type checking and evaluation is lost; the type checker will always loop; and that dependent types are really, really hard.
+``Most Haskell programmers are hesitant to program with dependent types. It is said that type checking becomes undecidable; the phase distinction between type checking and evaluation is lost; the type checker will always loop; and that dependent types are really, really hard.
 
-The same Haskell programmers, however, are perfectly happy to program with a ghastly hodgepodge of generalized algebraic data types, multi-parameter type classes with functional dependencies, impredicative higher-ranked types, and even data kinds. They will go to great lengths to avoid dependent types." \cite{lambdaPi}
+The same Haskell programmers, however, are perfectly happy to program with a ghastly hodgepodge of generalized algebraic data types, multi-parameter type classes with functional dependencies, impredicative higher-ranked types, and even data kinds. They will go to great lengths to avoid dependent types.'' \cite{lambdaPi}
 \end{quote}
 
 At the same time, a lot of smart people are pushing dependent types. For instance, \cite{langVeri} sees a dependently typed, pay-as-you-go approach to language verification as the next logical step in the progression of languages.

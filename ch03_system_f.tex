@@ -2,7 +2,7 @@
 System F is a second-order typed lambda calculus that allows universal quantification over types. The Curry-Howard Isomorphism extends to System F, providing a direct correspondence to second order intuitionistic logic. It was discovered independently by the Logician Jean-Yves Girard and Computer Scientist John C. Reynolds. Girard developed System F as a proof notation for second-order logic, while Reynolds invented System F when trying to build a type system for a polymorphic programming language. \cite{CHnotes}
 
 \section{A Quick Intuition on System F}
-The practical idea of System F is to add polymorphism to typed lambda calculus. For instance if we want to define the untyped function $composition = \lambda f. \lambda g. \lambda x. f\ (g\ x) $ in $\lambda_{\rightarrow} $ (simply typed lambda calculus), we would potentially need to define an infinite number of functions in order to satisfy all possible types:
+The practical idea of System F is to add polymorphism to typed lambda calculus. For instance if we want to define the untyped function $composition = \lambda f. \lambda g. \lambda x. f\ (g\ x) $ in $\lambda_{\rightarrow}$, we would potentially need to define an infinite number of functions in order to satisfy all possible types:
 \begin{spacing}{1}
 \begin{equation*}
   \begin{aligned}
@@ -44,5 +44,5 @@ Girard's Representation Theorem results in a projection from second order logic 
 
 Thus the Reynolds embedding followed by the Girard projection is the identity. While Girard's projection followed by Reynolds' embedding is not since the projection discards all information about individuals.
 
-\section{System F in Use}
+\section{System F in use}
 System F enables us to reason about programs with polymorphism. This power comes with a downside, type inference becomes undecidable. To mitigate this many modern languages use weaker forms of polymorphism, such as \emph{Rank-2 Polymorphism}, in which type inference is decidable. In addition to formalizing polymorphism, System F has yielded interesting results in language security (\cite{infoFlow}) and lead to the notion of free theorems.

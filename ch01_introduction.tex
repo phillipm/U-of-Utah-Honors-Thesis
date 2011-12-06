@@ -1,6 +1,4 @@
 \chapter{INTRODUCTION}\label{ch:intro}
-% TODO:
-INTRO
 
 \begin{SaveVerbatim}{const}
 const :: a -> b -> a
@@ -10,8 +8,7 @@ const :: a -> b -> a
 const a b = a
 \end{SaveVerbatim}
 
-\section{What is the Curry-Howard Isomorphism?}
-The Curry-Howard Isomorphism states that there is a direct correspondence between intuitionistic logic and typed lambda calculus. More specifically a type declaration given in a programming language corresponds to a logical proposition and an implementation of that type declaration is a proof of that proposition. Figure \ref{fig:const} shows the Haskell type signature for $const$ and the corresponding logical proposition via the Curry-Howard Isomorphism. Since intuitionistic logic is a special subset of classical logic, providing a well-typed implementation to the function's type signature is the same as giving a logical proof. The proof of $const$ is \BUseVerbatim{constProof}. The example in figure \ref{fig:const} is somewhat uninteresting since it deals with first-order logic. However, as will be shown, the Curry-Howard Isomorphism holds for higher levels of logic as well.
+The Curry-Howard Isomorphism states that there is a direct correspondence between intuitionistic logic and typed lambda calculus. More specifically, a type declaration given in a programming language corresponds to a logical proposition and an implementation of that type declaration is a proof of that proposition. Figure \ref{fig:const} shows the Haskell type signature for $const$ and the corresponding logical proposition via the Curry-Howard Isomorphism. Since intuitionistic logic is a special subset of classical logic, providing a well-typed implementation to the function's type signature is the same as giving a logical proof. The proof of $const$ is \BUseVerbatim{constProof}. The example in figure \ref{fig:const} is somewhat uninteresting since it deals with first-order logic. However, as will be shown, the Curry-Howard Isomorphism holds for higher levels of logic and has led to many useful concepts in Programming Languages research.
 
 \begin{figure}
   \begin{subfigure}[b]{.5\linewidth}
@@ -30,9 +27,7 @@ The Curry-Howard Isomorphism states that there is a direct correspondence betwee
   \label{fig:const}
 \end{figure}
 
-\section{Why is this interesting?}
-One might ask how useful the C-H is? While it isn't directly applicable to the average programmer, it is heavily used in research. Programming Language researchers are coming up with crazy new programming languages that make use of C-H. For example, Cayenne and Omega, two relatively new languages use dependent types, which correspond to higher-order logic. The C-H enables Mathematicians and Computer Scientists to benefit from each other's discoveries. Computer scientists have traditionally researched reductions in lambda calculus, while mathematicians have worked on normalization in proof theory. Thus, a discovery in one domain directly translates into the other domain \cite{CHnotes}.
+\section{How is it useful?}
+One might ask how useful the Curry-Howard Isomorphism is? While it isn't directly applicable to the average programmer, it is heavily used in research. Programming Language researchers are coming up with crazy new programming languages that make use of Curry-Howard Isomorphism. For example, Cayenne and Omega, two relatively new languages use dependent types, which correspond to higher-order logic. The Curry-Howard Isomorphism enables Mathematicians and Computer Scientists to benefit from each other's discoveries. Computer scientists have traditionally researched reductions in lambda calculus, while mathematicians have worked on normalizations in proof theory. Thus, a discovery in one domain directly translates into the other domain \cite{CHnotes}.
 
-% TODO:
-CLOSE
-%My interest in C-H started when I wanted to create a system to generate functions given a type signature and example input-output pairs. The problem is too under-determined to be plausible, but using more advanced type systems and leveraging C-H might mitigate that.
+The remainder of this survey will follow accordingly: Section 2 introduces intuitionistic logic and how it differs from classical logic. Section 3 explores the second order type system known as System F. Section 4 delves further into the intricacies of System F by way of parametric polymorphism. Section 5 introduces type operators and dependent types.

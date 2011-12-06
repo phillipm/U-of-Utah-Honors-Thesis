@@ -2,11 +2,11 @@
 With universal quantification ($\forall $) over types, System F allows us to reason about polymorphic functions. System F's polymorphism is called \emph{parametric polymorphism}, as compared to the \emph{ad-hoc polymorphism} of method overloading in most imperative languages. The generality of this parametric polymorphism has much to offer.
 
 \section{Theorems for Free}
-In "Theorems for Free!" \cite{theoremsForFree}, Wadler refines some ideas on parametric polymorphism presented by Reynolds in \cite{reynolds}. The overarching idea is that parametrically polymorphic functions behave uniformly across all types. With this uniformity we can derive certain simple theorems from only the type signature.
+In ``Theorems for Free!'' \cite{theoremsForFree}, Wadler refines some ideas on parametric polymorphism presented by Reynolds in \cite{reynolds}. The overarching idea is that parametrically polymorphic functions behave uniformly across all types. With this uniformity we can derive certain simple theorems from only the type signature.
 
-Take, for instance, this polymorphic function type $f : \forall A . A \rightarrow A$. If we exclude the ability to do runtime type analysis \cite{vytinFree}, there is no way to do operations that distinguish between types. Hence, the only possible function body that could inhabit $f$ is the identity function $f = \lambda A\ .\ \lambda x : A\ .\ x $
+Take, for instance, this polymorphic function type $f : \forall A . A \rightarrow A$. If we exclude the ability to do runtime type analysis, there is no way to do operations that distinguish between types. Hence, the only possible function body that could inhabit $f$ is the identity function $f = \lambda A\ .\ \lambda x : A\ .\ x $
 
-Extending this idea to functions that operate over lists, a function such as $g : \forall A . [A] \rightarrow [A] $ can only operate over the elements provided to it. Wadler, making use of this, shows that polymorphic functions in System F commute with all functions that operate on more specific types. For instance, given function signatures $f : \forall A . [A] \rightarrow [A]$ and $g : Char \rightarrow Int$, Wadler shows that $map\ g \circ f_{Char} \equiv f_{Int} \circ map\ g$.
+Extending this idea to functions that operate over lists, a function type such as $g : \forall A . [A] \rightarrow [A] $ can only operate over the elements provided to it. Wadler, making use of this, shows that polymorphic functions in System F commute with all functions that operate on more specific types. For instance, given function signatures $f : \forall A . [A] \rightarrow [A]$ and $g : Char \rightarrow Int$, Wadler shows that $map\ g \circ f_{Char} \equiv f_{Int} \circ map\ g$.
 
 Figure \ref{fig:para} is a continuation of this example in Haskell using the ExistentialQuantification extension. We let $f$ be the $reverse$ function, and $g$ be $ord$, which takes characters to their ascii values.
 \begin{SaveVerbatim}{para}
@@ -18,11 +18,11 @@ f = reverse
 g :: Char -> Int
 g = ord
 
-Main*> map g . f $ ['a'..'f']
-  [102,101,100,99,98,97]
+> map g . f $ ['a'..'f']
+[102,101,100,99,98,97]
 
-Main*> f . map g $ ['a'..'f']
-  [102,101,100,99,98,97]
+> f . map g $ ['a'..'f']
+[102,101,100,99,98,97]
 \end{SaveVerbatim}
 \begin{figure}
   \BUseVerbatim{para}
@@ -30,7 +30,7 @@ Main*> f . map g $ ['a'..'f']
   \label{fig:para}
 \end{figure}
 
-\section{Pffft, tell me something useful}
+\section{Pffft, is this useful?}
 While trivial looking, these simple commuting theorems are actually useful. They enable us to add function commutativity to our arsenal of algebraic manipulations when we are reasoning about programs \cite{theoremsForFree}. In addition, \cite{impreciseSemantics} states that the reordering of function applications can lead to improved efficiency of code by enabling additional transformations and analysis.
 
 Can we scale the idea of free theorems to more complicated languages, such as those in use today? It turns out that there is a lot of recent research making use of free theorems.
@@ -49,13 +49,13 @@ tail
 null
 takeWhile
 
--- only propagates errors (This makes no sense to me!)
+-- only propagates errors
 map tail
 
 -- can possibly produce empty list or divide by zero errors
 (takeWhile (null . tail) l)
 
--- by parametric free theorems:
+-- by parametric free theorems the following should hold:
 map tail (takeWhile (null . tail) l) == 
 takeWhile null (map tail l)
 
@@ -66,7 +66,7 @@ map tail (takeWhile (null . tail) l)
 takeWhile null (map tail l)
 \end{SaveVerbatim}
 
-Let us look at the example in Figure \ref{fig:imprecise} that is derived from \cite{impreciseSemantics}. This example shows that Haskell's non-deterministic error semantics might introduce new errors when free theorems are used. \cite{impreciseSemantics} is able to formulate a way to use free theorems in the presence of imprecise errors.
+Let us look at the example in Figure \ref{fig:imprecise}, which is derived from \cite{impreciseSemantics}. This example shows that Haskell's non-deterministic error semantics might introduce new errors when free theorems are used. \cite{impreciseSemantics} is able to formulate a way to use free theorems in the presence of imprecise errors.
 
 \begin{figure}
   \BUseVerbatim{imprecise}
@@ -99,9 +99,9 @@ f' . g /= g . f'
 \end{SaveVerbatim}
 
 
-As for runtime type analysis, the essence of the problem is that polymorphic functions can treat inputs of different types non-uniformly. Hence there is no straight forward way to derive free theorems from polymorphic functions that analyze types, such as the function $f'$ from \cite{vytinFree}, which is shown in Figure \ref{fig:noFree}. \cite{vytinFree} remedies this problem by using representation types. Languages such as $\lambda_R $ use term representation of types to simulate runtime type analysis \cite{erasureSemantics}. The idea is to have terms represent types, so if term $e$ represents type $t$, then term $e$ has type $R\ t$. 
+As for runtime type analysis, the essence of the problem is that polymorphic functions can treat inputs of different types non-uniformly. Hence there is no straight forward way to derive free theorems from polymorphic functions that analyze types, such as the function $f'$ from \cite{vytinFree}, which is shown in Figure \ref{fig:noFree}. The authors of \cite{vytinFree} remedy this problem by using representation types. Languages such as $\lambda_R $ use term representation of types to simulate runtime type analysis \cite{erasureSemantics}. The idea is to have terms represent types, so if term $e$ represents type $t$, then term $e$ has type $R\ t$. 
 
-The introduction of GADTs (generalized algebraic datatypes) has enabled representation types to be used with parametricity. This is best seen in Figure \ref{fig:rep}, which is an example from \cite{vytinFree} that uses Haskell's GADT language extension. In Figure \ref{fig:rep} the general free theorem $(g[\tau]\ r) \circ h \cong h \circ (g[\tau]\ r) $ doesn't hold because of $R_{int} $. Of course if we are analyzing $R_{any} $ it holds: $(g[\tau]\ (R_{any}[\tau])) \circ h \cong h \circ (g[\tau]\ (R_{any}[\tau])) $ \cite{vytinFree}
+The introduction of GADTs (generalized algebraic datatypes) has enabled representation types to be used with parametricity. This is best seen in Figure \ref{fig:rep}, which is an example from \cite{vytinFree} that uses Haskell's GADT language extension. In Figure \ref{fig:rep} the general free theorem $(g[\tau]\ r) \circ h \cong h \circ (g[\tau]\ r) $ doesn't hold because of $R_{int} $, yet if we are analyzing $R_{any}$ it holds: $(g[\tau]\ (R_{any}[\tau])) \circ h \cong h \circ (g[\tau]\ (R_{any}[\tau])) $ \cite{vytinFree}
 
 \begin{figure}
   \BUseVerbatim{noFree}
