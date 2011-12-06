@@ -1,28 +1,25 @@
 \chapter{INTUITIONISTIC LOGIC}\label{ch:logic}
 The Curry-Howard Isomorphism is a correspondence between typed lambda calculus and a stricter subset of classical logic called intuitionistic logic. What differentiates intuitionistic logic from other forms of logic?
 
-Simply stated, intuitionistic logic designed is such that proving a theorem is done by constructing an example that satisfies that theorem from a set of givens. Intuitionistic logic originates from mathematicians concerned about unsound applications of classical logic. From Weyl 1946:
+Simply stated, intuitionistic logic is designed such that proving a theorem is done by constructing an example that satisfies that theorem from a set of givens. Intuitionistic logic originates from mathematicians concerned about unsound applications of classical logic. From Weyl 1946:
 \begin{quote}
 "According to his view and reading of history, classical logic was abstracted from the mathematics of finite sets and their subsets. ... Forgetful of this limited origin, one afterwards mistook that logic for something above and prior to all mathematics, and finally applied it, without justification, to the mathematics of infinite sets."
 \end{quote}
 
-Classical mathematical logic is composed of intuitionistic and non-intuitionistic parts, and in essence they differ on their view of the infinite:
-\begin{quote}
-The non-intuitionistic mathematics which culminated in the theories of Weierstrass, Dedekind, and Cantor, and the intuitionistic mathematics of Brouwer, differ essentially in their view of the infinite. In the former, the infinite is treated as \emph{actual} or \emph{completed} or \emph{extended} or \emph{existential}. ... in the latter, the infinite is treated only as \emph{potential} or \emph{becoming} or \emph{constructive}.
-$\S 13$ of \cite{metamath}
-\end{quote}
+This is troubling indeed, so Mathematicians began studying the intuitionistic fragment of classical logic, and in essence the distinction of this fragment is how it treats the infinite:
+In classical logic, ``the infinite is treated as \emph{actual} or \emph{completed} or \emph{extended} or \emph{existential}.'' While in intuitionistic logic ``the infinite is treated only as \emph{potential} or \emph{becoming} or \emph{constructive}.'' \cite{metamath}
 
-% TODO: remove some of these block quotes!
-\begin{quote}
-In classical mathematics there occur \emph{non-constructive} or \emph{indirect} existence proofs, which the intuitionists do not accept. For example, to prove \emph{there exists an n such that P(n)}, the classical mathematics may deduce a contradiction from the assumption \emph{for all $n$, not $P(n)$}. Under both the classical and the intuitionistic logic, by reductio ab absurdum this gives \emph{not for all $n$, not $P(n)$}. The classical logic allows this result to be transformed into \emph{there exists an n such that P(n)}, but not (in general) the intuitionistic. Such a classical existence proof leaves us no nearer than before the proof was given to having an example of a number $n$ such that $P(n)$. $\S 13$ of \cite{metamath}
-\end{quote}
+What sort of implications does this have? There is no longer the classical notions of a single True ($\top$) or False ($\bot$). Logical propositions are True if a construction can be shown for them, that is if we can derive a construction from a rule system and a set of knowns. False becomes the non-constructable or the absurd. Thus the law of excluded middle and double negation elimination do not hold.
 
-\section{Why does Brouwer's intuitionistic logic reject the law of excluded middle?}
+\section{Rejection of double negation elimination}
+Negation of a proposition, $\neg P$, in intuitionistic logic can be thought of as $P \rightarrow \bot$, that is every construction of $P$ is turned into a non-existent object. Thus to prove double negation in intuitionistic logic, we must show that $P \rightarrow \neg \neg P$ and $\neg \neg P \rightarrow P$. The proof of the first, which should be expanded to $P \rightarrow ((P \rightarrow \bot) \rightarrow \bot)$ is as follows :
+\begin{quote}
+Given a proof of $P$, here is a proof of $P \rightarrow ((P \rightarrow \bot) \rightarrow \bot)$: Take a proof $P \rightarrow \bot$. It is a method to translate proofs of $P$ into proofs of $\bot$. Since we have a proof of $P$, we can use this method to obtain a proof of $\bot$. \cite{CHnotes}
+\end{quote}
+Going the other way is where we encounter problems. $((P \rightarrow \bot) \rightarrow \bot) \rightarrow P$ doesn't hold because we don't have a construction of $P$.
+
+\section{Rejection of the law of excluded middle}
 According to \cite{stanfordLogic} 
 \begin{quote}
 Brouwer [1908] observed that LEM was abstracted from finite situations, then extended without justification to statements about infinite collections. For example, if $x$, $y$ range over the natural numbers $0, 1, 2, \ldots$ and $B(x)$ abbreviates the property (there is a $y > x$ such that both $y$ and $y+2$ are prime numbers), then we have no general method for deciding whether $B(x)$ is true or false for arbitrary $x$, so $\forall x . (B(x) \vee \neg B(x))$ cannot be asserted in the present state of our knowledge. And if $A$ abbreviates the statement $\forall x . B(x)$, then $(A \vee \neg A)$ cannot be asserted because neither $A$ nor $\neg A$ has yet been proved.
 \end{quote}
-
-%\section{Why does intuitionistic logic exclude the double negation axiom?}
-% TODO: Conclusion
-SECTION CONCLUSION
