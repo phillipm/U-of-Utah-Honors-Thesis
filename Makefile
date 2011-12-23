@@ -1,8 +1,8 @@
 all:
-	pdflatex AllegThesis
-	bibtex AllegThesis
-	pdflatex AllegThesis
-	pdflatex AllegThesis
+	pdflatex UtahHonorsThesis
+	bibtex UtahHonorsThesis
+	pdflatex UtahHonorsThesis
+	pdflatex UtahHonorsThesis
 
 clean:
-	\rm report.pdf *.aux *.bbl *.blg *.log *.out *~ *.lof *.lot *.toc
+	\rm *.aux *.bbl *.blg *.log *.out *~ *.lof *.lot *.toc

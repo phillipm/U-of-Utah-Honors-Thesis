@@ -1,3 +1,14 @@
+Phillip's Notes:
+Fall 2011
+This is a honors thesis example template as adapted from 
+Allegheny's Thesis to be used for the University of Utah's Honors College.
+It has been brutally hacked up but I'm posting it here since 
+there is no official LaTeX template and this may save somebody a whole lot of time.
+
+Just run the Makefile to compile the pdf.
+
+
+Original Creators Notes:
 This directory contains the files necessary to compile
 a complete LaTeX thesis in a style suitable for an
 Allegheny College senior comp thesis.
@@ -17,10 +28,10 @@ MODIFICATIONS:
           command from the Project menu.  The "gather" and "tree" commands
           will then create the tree representation for the project, and
           allow pop-up menus for citations and referencing labels.
-          
+
 ***************
 USING THE TEMPLATES
-       
+
 The main .tex document is AllegThesis.tex...to compile
 the entire document, run
 
